@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity"
+    tools:context=".FinderMainActivity"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     tools:openDrawer="start"
@@ -164,18 +164,44 @@
 
 
 </android.support.constraint.ConstraintLayout>
-
-    <view class="android.support.v7.app.AlertController$RecycleListView"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/finder_menu_layout"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
-        android:background="#111"/>
+        android:background="@color/icons">
+
+        <LinearLayout
+            android:id="@+id/finder_menu_header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="vertical"
+            android:background="@color/colorAccent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/placeholder"
+                android:textColor="@color/icons"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="20dp"/>
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/finder_menu_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            app:layout_constraintTop_toBottomOf="@id/finder_menu_header_layout">
+
+        </android.support.v7.widget.RecyclerView>
 
 
-
+    </android.support.constraint.ConstraintLayout>
 
 
 </android.support.v4.widget.DrawerLayout>
