@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EventActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/eventlist_menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_height="match_parent"
+            android:text="[Festival Name]"
+            android:textColor="@color/icons"
+            android:textSize="20dp"
+            android:gravity="center"/>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_event" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/event_image_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/eventlist_menu_layout">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:text="@string/placeholder"
+            android:textSize="40dp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:background="@color/design_default_color_primary"/>
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:padding="8dp"
+        android:elevation="8dp"
+        app:layout_constraintTop_toBottomOf="@id/event_image_layout">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:text="@string/details"
+            android:textColor="@color/primaryText"
+            android:textSize="20dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="@string/event_btn_link"
+            android:textColor="@color/icons"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+
+
+</android.support.constraint.ConstraintLayout>

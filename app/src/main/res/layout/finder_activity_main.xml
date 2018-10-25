@@ -20,9 +20,6 @@
     >
 
 
-
-
-
     <TextView
         android:id="@+id/finder_label_name"
         android:text="@string/finder_label_name"

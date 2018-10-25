@@ -12,7 +12,8 @@
     <string name="finder_hint_date">dd/mm/yyyy</string>
     <string name="finder_btn_search">SEARCH</string>
     <string name="placeholder">[PLACEHOLDER]</string>
-
+    <string name="details">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="event_btn_link">SongKick</string>
 
     <string-array name="locations">
         <item>Alava</item>
@@ -72,6 +73,7 @@
         <item>Attended</item>
     </string-array>
     <string name="title_activity_list">ListActivity</string>
+    <string name="title_activity_event">Event</string>
 
 
 </resources>
