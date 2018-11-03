@@ -63,9 +63,11 @@
             android:textSize="20dp" />
 
         <Button
+            android:id="@+id/event_btn_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorAccent"
+            android:onClick="OpenSongKickLink"
             android:text="@string/event_btn_link"
             android:textColor="@color/icons"
             app:layout_constraintBottom_toBottomOf="parent"

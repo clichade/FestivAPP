@@ -1,13 +1,17 @@
 package com.example.trjano.festivapp
 
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.support.annotation.IdRes
+import android.support.annotation.Nullable
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.example.trjano.festivapp.database.AdminSQLiteOpenHelper
 
 import kotlinx.android.synthetic.main.activity_event_list.*
 
@@ -38,9 +42,41 @@ class EventListActivity : AppCompatActivity() {
 
     fun event_list_setup(){
 
-        viewManager = GridLayoutManager(this,2)
-        viewAdapter = EventListAdapter(arrayOf("1","2","3","4","5","6","7","8"))
+        //Obtenemos el extra del Activity para determinar si venimos de una búsqueda, favoritos o pendientes
+        val type: String =  intent.getStringExtra("Type")
+        val tuple: Cursor
 
+            when (type) {
+                "Favorites" -> {
+                    val favs = AdminSQLiteOpenHelper(this, "FAVORITES_EVENTS", null, 1)
+                    val admin: SQLiteDatabase = favs.writableDatabase
+                    tuple = admin.rawQuery("SELECT * FROM FAVORITES_EVENTS", null)
+                    tuple.close()
+
+                }
+                "Pending" -> {
+                    val pendings = AdminSQLiteOpenHelper(this, "UPCOMING_EVENTS", null, 1)
+                    val admin: SQLiteDatabase = pendings.writableDatabase
+                    tuple = admin.rawQuery("SELECT * FROM UPCOMING_EVENTS", null)
+                    tuple.close()
+
+                }
+                "Assisted" -> {
+                    val assisted = AdminSQLiteOpenHelper(this, "PAST_EVENTS", null, 1)
+                    val admin: SQLiteDatabase = assisted.writableDatabase
+                    tuple = admin.rawQuery("SELECT * FROM PAST_EVENTS", null)
+                    tuple.close()
+
+                }
+            }
+
+
+        viewManager = GridLayoutManager(this,2)
+
+        //TODO: El objeto tuple tiene los eventos. Procesarlos como cursor (no sé hacerlo)
+
+
+        viewAdapter = EventListAdapter(arrayOf("1","2","3","4","5","6","7","8"))
 
         event_list.apply {
             // use this setting to improve performance if you know that changes
@@ -55,6 +91,5 @@ class EventListActivity : AppCompatActivity() {
 
 
         }
-
     }
 }
