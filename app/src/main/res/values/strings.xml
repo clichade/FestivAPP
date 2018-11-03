@@ -2,6 +2,12 @@
     <string name="app_name">FestivAPP</string>
     <string name="API_KEY">BsmQKU834Qlfu4Ap</string>
 
+    <string name="main_btn_search">Search</string>
+    <string name="main_btn_favorites">Favorites</string>
+    <string name="main_btn_pending">Pending</string>
+    <string name="main_btn_attended">Attended</string>
+    <string name="main_label_myevents">My Events</string>
+
     <string name="finder_label_name">Name</string>
     <string name="finder_hint_name"> Input Name</string>
     <string name="finder_label_location">Location</string>
@@ -14,6 +20,16 @@
     <string name="placeholder">[PLACEHOLDER]</string>
     <string name="details">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
     <string name="event_btn_link">SongKick</string>
+    <string name="finder_label_type">Type</string>
+
+    <string name="general_concert">Concert</string>
+    <string name="general_festival">Festival</string>
+
+    <string name="test_short">Test name</string>
+    <string name="test_medium">Test name medium</string>
+    <string name="test_large">Long test name for secondary text</string>
+    <string name="test_date">19/03/1997</string>
+
 
     <string-array name="locations">
         <item>Alava</item>
