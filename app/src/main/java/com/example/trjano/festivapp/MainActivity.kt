@@ -31,18 +31,21 @@ class MainActivity : AppCompatActivity() {
         btn_favorites.setOnClickListener(){
             //Todo Implementar el funcionamiento del botón favoritos
             val intent = Intent(this, EventListActivity::class.java)
+            intent.putExtra("Type","Favorite")
             startActivity(intent)
         }
 
         btn_pending.setOnClickListener(){
             //Todo Implementar el funcionamiento del botón pendientes
             val intent = Intent(this, EventListActivity::class.java)
+            intent.putExtra("Type","Pending")
             startActivity(intent)
         }
 
         btn_assisted.setOnClickListener(){
             //Todo Implementar el funcionamiento del botón asistidos
             val intent = Intent(this, EventListActivity::class.java)
+            intent.putExtra("Type","Assisted")
             startActivity(intent)
         }
     }
