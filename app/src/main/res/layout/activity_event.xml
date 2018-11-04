@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@id/eventlist_menu_layout">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="280dp"
+            android:layout_height="140dp"
             android:text="@string/placeholder"
             android:textSize="40dp"
             android:textAlignment="center"
@@ -47,31 +47,182 @@
             android:background="@color/design_default_color_primary"/>
     </android.support.constraint.ConstraintLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/event_image_layout">
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:padding="8dp"
-        android:elevation="8dp"
-        app:layout_constraintTop_toBottomOf="@id/event_image_layout">
+        android:layout_height="500dp"
+        android:padding="4dp"
+        android:layout_marginStart="8dp"
+        android:elevation="8dp">
+
+        <TextView
+            android:id="@+id/event_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/event_title"
+            android:textColor="@color/primaryText"
+            android:textSize="28dp"
+            />
+        <TextView
+            android:id="@+id/event_artists"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/event_name"
+            android:text="@string/event_artists"
+            android:textSize="20dp"
+            />
+
+        <LinearLayout
+            android:id="@+id/event_divider_1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="vertical"
+            android:background="@color/secondaryText"
+            app:layout_constraintTop_toBottomOf="@id/event_artists"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"></LinearLayout>
+
+        <TextView
+            android:id="@+id/event_label_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/event_divider_1"
+            android:text="@string/event_label_location"
+            android:layout_marginTop="8dp"
+            android:textSize="14dp"/>
+
+        <TextView
+            android:id="@+id/event_location_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/event_label_location"
+            android:textSize="20dp"
+            android:textColor="@color/primaryText"
+            android:text="@string/event_city_name"/>
+
+        <TextView
+            android:id="@+id/event_location_exact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/event_location_city"
+            android:textSize="16dp"
+            android:text="@string/event_exactlocation"
+            android:textColor="@color/primaryText"/>
+
+        <LinearLayout
+            android:id="@+id/event_divider_2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="vertical"
+            android:background="@color/secondaryText"
+            app:layout_constraintTop_toBottomOf="@id/event_location_exact"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"></LinearLayout>
+
+        <TextView
+            android:id="@+id/event_label_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/event_divider_2"
+            android:text="@string/event_label_date"
+            android:layout_marginTop="8dp"
+            android:textSize="14dp"/>
+
 
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:text="@string/details"
+            android:id="@+id/event_label_date_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/event_label_date"
+            android:textSize="20dp"
+            android:textColor="@color/colorAccent"
+            android:text="@string/finder_label_date_from"/>
+
+        <TextView
+            android:id="@+id/event_date_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/test_date"
             android:textColor="@color/primaryText"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/event_label_date_from"
+            app:layout_constraintTop_toBottomOf="@id/event_label_date" />
+
+        <TextView
+            android:id="@+id/event_label_date_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/event_date_from"
+            android:textSize="20dp"
+            android:textColor="@color/colorAccent"
+            android:text="@string/finder_label_date_to"/>
+
+        <TextView
+            android:id="@+id/event_date_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/test_date"
+            android:textColor="@color/primaryText"
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@+id/event_label_date_to"
+            app:layout_constraintTop_toBottomOf="@id/event_date_from" />
+
+        <TextView
+            android:id="@+id/event_date_start_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryText"
+            app:layout_constraintTop_toBottomOf="@id/event_date_to"
+            android:textSize="20dp"
+            android:text="08:00"/>
+
+        <LinearLayout
+            android:id="@+id/event_divider_3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="vertical"
+            android:background="@color/secondaryText"
+            app:layout_constraintTop_toBottomOf="@id/event_date_start_time"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp">
+
+        </LinearLayout>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
             android:background="@color/colorAccent"
-            android:text="@string/event_btn_link"
+            android:text="@string/evemt_btn_songkick"
             android:textColor="@color/icons"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_divider_3" />
+
+
+
+
+
+
+
+
+
 
     </android.support.constraint.ConstraintLayout>
+    </ScrollView>
 
 
 

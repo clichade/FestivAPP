@@ -12,11 +12,19 @@ import org.w3c.dom.Text
 class EventListAdapter(private val myDataset: Array<String>) :
         RecyclerView.Adapter<EventListAdapter.MyViewHolder>() {
 
+    var onItemClick: ((String) -> Unit)? = null
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder.
     // Each data item is just a string in this case that is shown in a TextView.
-    class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+    inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+        init {
+            view.setOnClickListener {
+                onItemClick?.invoke(myDataset[adapterPosition])
+            }
+        }
+    }
 
 
     // Create new views (invoked by the layout manager)

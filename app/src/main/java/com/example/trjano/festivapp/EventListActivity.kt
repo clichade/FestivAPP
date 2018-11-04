@@ -1,5 +1,6 @@
 package com.example.trjano.festivapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IdRes
 import android.support.design.widget.Snackbar
@@ -8,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.Toast
 
 import kotlinx.android.synthetic.main.activity_event_list.*
 
@@ -15,7 +17,7 @@ class EventListActivity : AppCompatActivity() {
 
     private val event_list : RecyclerView by bind(R.id.eventlist_list)
 
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewAdapter: EventListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
 
@@ -40,6 +42,14 @@ class EventListActivity : AppCompatActivity() {
 
         viewManager = GridLayoutManager(this,2)
         viewAdapter = EventListAdapter(arrayOf("1","2","3","4","5","6","7","8"))
+
+        viewAdapter.onItemClick = { String ->
+            val intent = Intent(this, EventActivity::class.java)
+            startActivity(intent)
+        }
+
+
+
 
 
         event_list.apply {

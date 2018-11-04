@@ -22,6 +22,14 @@
     <string name="event_btn_link">SongKick</string>
     <string name="finder_label_type">Type</string>
 
+    <string name="event_title"> Title name 2018</string>
+    <string name="event_artists">"Artist1, Artist2, ArtistGroup3, Artistgroup4, Artist5, ArtistBand6, Artistband7"</string>
+    <string name="event_label_location">Location</string>
+    <string name="event_city_name">Cityname</string>
+    <string name="event_exactlocation">RoyalTest Stadium 26, 60011</string>
+    <string name="event_label_date">Date</string>
+    <string name="evemt_btn_songkick">SongKick</string>
+
     <string name="general_concert">Concert</string>
     <string name="general_festival">Festival</string>
 

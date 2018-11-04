@@ -14,12 +14,15 @@
         android:layout_height="120dp"
         android:text="@string/main_btn_search"
         android:textSize="40dp"
-        android:drawableLeft="@mipmap/ic_launcher"
+        android:drawableLeft="@mipmap/ic_search"
+        android:drawableTint="@color/icons"
         android:background="@color/colorPrimary"
-        android:paddingLeft="40dp"
+        android:paddingLeft="80dp"
         android:paddingRight="40dp"
         android:elevation="8dp"
-        android:textColor="@color/icons"/>
+        android:textColor="@color/icons"
+        android:textAlignment="textStart"
+        />
 
     <TextView
         android:id="@+id/main_label_myevents"
