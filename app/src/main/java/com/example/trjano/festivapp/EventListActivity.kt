@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Toast
+import com.example.trjano.festivapp.database.AdminSQLiteOpenHelper
 
 import kotlinx.android.synthetic.main.activity_event_list.*
 
@@ -39,10 +40,23 @@ class EventListActivity : AppCompatActivity() {
     }
 
     fun event_list_setup(){
+        val table: String = intent.extras.getString("Type").toString()
+        val admin  =  AdminSQLiteOpenHelper(this, table,null,1)
+        val db = admin.writableDatabase
+        val tuple = db.rawQuery("SELECT * FROM $table",null)
+        val list: MutableList<String> = listOf<String>() as MutableList<String>
+        var i = 0
+        while(tuple.moveToNext()){
+            list.add(i,tuple.getString(i))
+            i++
+        }
+
 
         viewManager = GridLayoutManager(this,2)
+        //TODO: Hay que cambiar el metodo Adapter para que trabaje con lista y no con Array
         viewAdapter = EventListAdapter(arrayOf("1","2","3","4","5","6","7","8"))
 
+        tuple.close()
         viewAdapter.onItemClick = { String ->
             val intent = Intent(this, EventActivity::class.java)
             startActivity(intent)
