@@ -16,10 +16,12 @@
             android:layout_width="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_height="match_parent"
-            android:text="[Festival Name]"
+            android:text="@string/event"
             android:textColor="@color/icons"
             android:textSize="20dp"
             android:gravity="center"/>
+
+
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"

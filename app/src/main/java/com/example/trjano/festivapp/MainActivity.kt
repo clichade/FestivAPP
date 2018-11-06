@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.annotation.IdRes
 import android.view.View
 import android.widget.Button
+import com.example.trjano.festivapp.database.AdminSQLiteOpenHelper
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +20,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         components_setup()
+
+        //Put your test here
+        val db = AdminSQLiteOpenHelper(this,"Fav",null,1)
+
     }
 
 

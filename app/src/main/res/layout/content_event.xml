@@ -8,4 +8,15 @@
     tools:context=".EventActivity"
     tools:showIn="@layout/activity_event">
 
+    <ImageButton
+        android:id="@+id/event_ibtn_favorites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@mipmap/ic_favorite_no"
+        android:backgroundTint="#fbc02d"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

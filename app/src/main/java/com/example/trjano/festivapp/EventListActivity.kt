@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.trjano.festivapp.database.AdminSQLiteOpenHelper
@@ -44,7 +45,7 @@ class EventListActivity : AppCompatActivity() {
         val admin  =  AdminSQLiteOpenHelper(this, table,null,1)
         val db = admin.writableDatabase
         val tuple = db.rawQuery("SELECT * FROM $table",null)
-        val list: MutableList<String> = listOf<String>() as MutableList<String>
+        val list: MutableList<String> = mutableListOf()
         var i = 0
         while(tuple.moveToNext()){
             list.add(i,tuple.getString(i))
@@ -58,6 +59,7 @@ class EventListActivity : AppCompatActivity() {
 
         tuple.close()
         viewAdapter.onItemClick = { String ->
+            Log.d("dev",String)
             val intent = Intent(this, EventActivity::class.java)
             startActivity(intent)
         }
