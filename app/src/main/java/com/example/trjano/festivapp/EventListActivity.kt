@@ -41,7 +41,7 @@ class EventListActivity : AppCompatActivity() {
     }
 
     fun event_list_setup(){
-        val table: String = intent.extras.getString("Type").toString()
+       /* val table: String = intent.extras.getString("Type").toString()
         val admin  =  AdminSQLiteOpenHelper(this, table,null,1)
         val db = admin.writableDatabase
         val tuple = db.rawQuery("SELECT * FROM $table",null)
@@ -50,14 +50,13 @@ class EventListActivity : AppCompatActivity() {
         while(tuple.moveToNext()){
             list.add(i,tuple.getString(i))
             i++
-        }
-
+        }*/
 
         viewManager = GridLayoutManager(this,2)
-        //TODO: Hay que cambiar el metodo Adapter para que trabaje con lista y no con Array
         viewAdapter = EventListAdapter(arrayOf("1","2","3","4","5","6","7","8"))
 
-        tuple.close()
+        //tuple.close()
+
         viewAdapter.onItemClick = { String ->
             Log.d("dev",String)
             val intent = Intent(this, EventActivity::class.java)

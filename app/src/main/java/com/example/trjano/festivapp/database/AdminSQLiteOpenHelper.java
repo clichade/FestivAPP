@@ -6,6 +6,53 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "events.db";
+
+    private static final String TEXT_TYPE = " TEXT";
+    private static final String COMMA_SEP = ",";
+    private static final String SQL_CREATE_FAVORITES =
+            "CREATE TABLE " + DBContract.EventItem.TABLE_NAME_FAVORITES + " (" +
+                    DBContract.EventItem._ID + " INTEGER PRIMARY KEY," +
+                    DBContract.EventItem.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
+                    DBContract.EventItem.COLUMN_NAME_CITY + TEXT_TYPE + COMMA_SEP +
+                    DBContract.EventItem.COLUMN_NAME_START_DATE + TEXT_TYPE + COMMA_SEP +
+                    DBContract.EventItem.COLUMN_NAME_END_DATE + TEXT_TYPE + COMMA_SEP+
+                    DBContract.EventItem.COLUMN_NAME_LOCATION + TEXT_TYPE + COMMA_SEP+
+                    DBContract.EventItem.COLUMN_NAME_ARTISTS + TEXT_TYPE + COMMA_SEP+
+                    DBContract.EventItem.COLUMN_NAME_TYPE + TEXT_TYPE +
+                    " )";
+
+    private static final String SQL_CREATE_UPCOMING =
+            "CREATE TABLE " + DBContract.EventItem.TABLE_NAME_UPCOMING + " (" +
+                    DBContract.EventItem._ID + " INTEGER PRIMARY KEY," +
+                    DBContract.EventItem.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
+                    DBContract.EventItem.COLUMN_NAME_CITY + TEXT_TYPE + COMMA_SEP +
+                    DBContract.EventItem.COLUMN_NAME_START_DATE + TEXT_TYPE + COMMA_SEP +
+                    DBContract.EventItem.COLUMN_NAME_END_DATE + TEXT_TYPE + COMMA_SEP+
+                    DBContract.EventItem.COLUMN_NAME_LOCATION + TEXT_TYPE + COMMA_SEP+
+                    DBContract.EventItem.COLUMN_NAME_ARTISTS + TEXT_TYPE + COMMA_SEP+
+                    DBContract.EventItem.COLUMN_NAME_TYPE + TEXT_TYPE +
+                    " )";
+
+    private static final String SQL_CREATE_PAST =
+            "CREATE TABLE " + DBContract.EventItem.TABLE_NAME_PAST + " (" +
+                    DBContract.EventItem._ID + " INTEGER PRIMARY KEY," +
+                    DBContract.EventItem.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
+                    DBContract.EventItem.COLUMN_NAME_CITY + TEXT_TYPE + COMMA_SEP +
+                    DBContract.EventItem.COLUMN_NAME_START_DATE + TEXT_TYPE + COMMA_SEP +
+                    DBContract.EventItem.COLUMN_NAME_END_DATE + TEXT_TYPE + COMMA_SEP+
+                    DBContract.EventItem.COLUMN_NAME_LOCATION + TEXT_TYPE + COMMA_SEP+
+                    DBContract.EventItem.COLUMN_NAME_ARTISTS + TEXT_TYPE + COMMA_SEP+
+                    DBContract.EventItem.COLUMN_NAME_TYPE + TEXT_TYPE +
+                    " )";
+
+    private static final String SQL_DELETE_FAVORITES_EVENTS =
+            "DROP TABLE IF EXISTS " + DBContract.EventItem.TABLE_NAME_FAVORITES;
+    private static final String SQL_DELETE_UPCOMING_EVENTS =
+            "DROP TABLE IF EXISTS " + DBContract.EventItem.TABLE_NAME_UPCOMING;
+    private static final String SQL_DELETE_PAST_EVENTS =
+            "DROP TABLE IF EXISTS " + DBContract.EventItem.TABLE_NAME_PAST;
 
     /**
      * Create a helper object to create, open, and/or manage a database.
@@ -14,14 +61,10 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
      * {@link #getReadableDatabase} is called.
      *
      * @param context to use for locating paths to the the database
-     * @param name    of the database file, or null for an in-memory database
-     * @param factory to use for creating cursor objects, or null for the default
-     * @param version number of the database (starting at 1); if the database is older,
-     *                {@link #onUpgrade} will be used to upgrade the database; if the database is
-     *                newer, {@link #onDowngrade} will be used to downgrade the database
+     *
      */
-    public AdminSQLiteOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public AdminSQLiteOpenHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     /**
@@ -41,30 +84,9 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE FAVORITES_EVENTS (SONGKICK_ID INT PRIMARY KEY," +
-                " NAME TEXT NOT NULL,"+
-                " CITY TEXT NOT NULL, " +
-                "START_DATE TEXT NOT NULL, " +
-                "END_DATE TEXT, " +
-                "LOCATION TEXT NOT NULL," +
-                " ARTISTS TEXT NOT NULL, " +
-                "TYPE INTEGER NOT NULL)");
-        db.execSQL("CREATE TABLE UPCOMING_EVENTS (SONGKICK_ID INT PRIMARY KEY," +
-                " NAME TEXT NOT NULL,"+
-                " CITY TEXT NOT NULL, " +
-                "START_DATE TEXT NOT NULL, " +
-                "END_DATE TEXT, " +
-                "LOCATION TEXT NOT NULL," +
-                " ARTISTS TEXT NOT NULL, " +
-                "TYPE INTEGER NOT NULL)");
-        db.execSQL("CREATE TABLE PAST_EVENTS (SONGKICK_ID INT PRIMARY KEY," +
-                " NAME TEXT NOT NULL,"+
-                " CITY TEXT NOT NULL, " +
-                "START_DATE TEXT NOT NULL, " +
-                "END_DATE TEXT, " +
-                "LOCATION TEXT NOT NULL," +
-                " ARTISTS TEXT NOT NULL, " +
-                "TYPE INTEGER NOT NULL)");
+        db.execSQL(SQL_CREATE_FAVORITES);
+        db.execSQL(SQL_CREATE_UPCOMING);
+        db.execSQL(SQL_CREATE_PAST);
     }
 
     /**
@@ -89,6 +111,9 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL(SQL_DELETE_FAVORITES_EVENTS);
+        db.execSQL(SQL_DELETE_PAST_EVENTS);
+        db.execSQL(SQL_DELETE_UPCOMING_EVENTS);
+        onCreate(db);
     }
 }

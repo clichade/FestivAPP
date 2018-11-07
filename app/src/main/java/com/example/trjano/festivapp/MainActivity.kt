@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         components_setup()
 
         //Put your test here
-        val db = AdminSQLiteOpenHelper(this,"Fav",null,1)
+       // val db = AdminSQLiteOpenHelper(this,"Fav",null,1)
 
     }
 
