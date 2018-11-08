@@ -1,17 +1,13 @@
 package com.example.trjano.festivapp
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import kotlinx.android.synthetic.main.finder_menu_list_item.view.*
-import org.w3c.dom.Text
+import com.example.trjano.festivapp.database.EventItem
 
-class EventListAdapter(private val myDataset: Array<String>) :
+class EventListAdapter(private var mItems : ArrayList<EventItem>) :
         RecyclerView.Adapter<EventListAdapter.MyViewHolder>() {
-
     var onItemClick: ((String) -> Unit)? = null
 
     // Provide a reference to the views for each data item
@@ -21,11 +17,15 @@ class EventListAdapter(private val myDataset: Array<String>) :
     inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         init {
             view.setOnClickListener {
-                onItemClick?.invoke(myDataset[adapterPosition])
+                onItemClick?.invoke(mItems[adapterPosition].toString())
             }
         }
     }
 
+    //Returns item for given position
+    fun getItem(pos: Int): EventItem {
+        return mItems[pos]
+    }
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
@@ -41,6 +41,28 @@ class EventListAdapter(private val myDataset: Array<String>) :
         return MyViewHolder(view)
     }
 
+    //Adds an event to the adapter list
+    fun add(item: EventItem) {
+        mItems.add(item)
+        notifyDataSetChanged()
+    }
+
+    //Clears the event list from the adapter
+    fun clear() {
+
+        mItems.clear()
+        notifyDataSetChanged()
+
+    }
+
+    //Assigns a list of events to adapter
+    fun load(items: List<EventItem>) {
+
+        mItems.clear()
+        mItems = ArrayList(items)
+        notifyDataSetChanged()
+
+    }
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
@@ -51,5 +73,5 @@ class EventListAdapter(private val myDataset: Array<String>) :
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = myDataset.size
+    override fun getItemCount() = mItems.size
 }

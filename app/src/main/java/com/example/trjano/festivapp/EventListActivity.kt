@@ -12,13 +12,14 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.trjano.festivapp.database.AdminSQLiteOpenHelper
+import com.example.trjano.festivapp.database.EventItem
 
 import kotlinx.android.synthetic.main.activity_event_list.*
 
 class EventListActivity : AppCompatActivity() {
 
     private val event_list : RecyclerView by bind(R.id.eventlist_list)
-
+  //  private val mItems = arrayListOf<EventItem>()
     private lateinit var viewAdapter: EventListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -41,29 +42,24 @@ class EventListActivity : AppCompatActivity() {
     }
 
     fun event_list_setup(){
-       /* val table: String = intent.extras.getString("Type").toString()
-        val admin  =  AdminSQLiteOpenHelper(this, table,null,1)
-        val db = admin.writableDatabase
-        val tuple = db.rawQuery("SELECT * FROM $table",null)
-        val list: MutableList<String> = mutableListOf()
-        var i = 0
-        while(tuple.moveToNext()){
-            list.add(i,tuple.getString(i))
-            i++
-        }*/
+
+
+        val list = arrayListOf<EventItem>()
+        var event1 = EventItem(0,"Evento1","Ciudad1","1/1/2018","2/1/2018","Localizacion1","Artista1","0")
+        var event2 = EventItem(1,"Evento2","Ciudad2","2/1/2018","3/1/2018","Localizacion2","Artista2","0")
+        var event3 = EventItem(2,"Evento3","Ciudad3","3/1/2018","4/1/2018","Localizacion3","Artista3","0")
+        var event4 = EventItem(3,"Evento4","Ciudad4","4/1/2018","5/1/2018","Localizacion4","Artista4","0")
+        list.addAll(listOf(event1, event2, event3,event4))
 
         viewManager = GridLayoutManager(this,2)
-        viewAdapter = EventListAdapter(arrayOf("1","2","3","4","5","6","7","8"))
+        viewAdapter = EventListAdapter(list)
 
-        //tuple.close()
 
         viewAdapter.onItemClick = { String ->
             Log.d("dev",String)
             val intent = Intent(this, EventActivity::class.java)
             startActivity(intent)
         }
-
-
 
 
 

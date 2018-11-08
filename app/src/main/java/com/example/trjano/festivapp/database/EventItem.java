@@ -19,6 +19,17 @@ public class EventItem {
     private String mArtists;
     private String mType;
 
+    public EventItem(long id, String name, String city, String startDate, String endDate, String location, String artists, String type) {
+        this.mId=id;
+        this.mName = name;
+        this.mCity = city;
+        this.mStartDate=startDate;
+        this.mEndDate=endDate;
+        this.mLocation=location;
+        this.mArtists=artists;
+        this.mType=type;
+    }
+
     public long getmId() {
         return mId;
     }
@@ -85,16 +96,6 @@ public class EventItem {
 
     public static final String ITEM_SEP = System.getProperty("line.separator");
 
-    public EventItem(long id, String name, String city, String startDate, String endDate, String location, String artists, String type) {
-        this.mId=id;
-        this.mName = name;
-        this.mCity = city;
-        this.mStartDate=startDate;
-        this.mEndDate=endDate;
-        this.mLocation=location;
-        this.mArtists=artists;
-        this.mType=type;
-    }
 
     public String toLog() {
         return "ID: "+mId+ ITEM_SEP+"Name:"+mName+ITEM_SEP+
