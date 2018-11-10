@@ -88,6 +88,20 @@ public class FavoritesCRUD {
         return newRowId;
     }
 
+    //Deletes the item by argument
+    public void deleteFavorite(EventItem item) {
+        // Gets the data repository in write mode
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        // Define 'where' part of query.
+        String selection = String.valueOf(item.getmId());
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = null;
+
+        // Issue SQL statement.
+        db.delete(DBContract.EventItem.TABLE_NAME_FAVORITES, selection, selectionArgs);
+    }
+
     public void deleteAllFavorites() {
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();

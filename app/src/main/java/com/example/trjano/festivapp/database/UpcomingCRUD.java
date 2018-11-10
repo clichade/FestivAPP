@@ -27,6 +27,11 @@ public class UpcomingCRUD {
             mInstance = new UpcomingCRUD(context);
         return mInstance;
     }
+
+    /**
+     * Gets a list of EventItem from the table UPCOMING_EVENTS
+     * @return
+     */
     public List<EventItem> getAllUpcomingEvents(){
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
@@ -58,7 +63,7 @@ public class UpcomingCRUD {
         if(cursor.getCount() > 0) {
             cursor.moveToFirst();
             do {
-                items.add(getToDoItemFromCursor(cursor));
+                items.add(getUpcomingEventFromCursor(cursor));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -88,6 +93,20 @@ public class UpcomingCRUD {
         return newRowId;
     }
 
+    //Deletes the item by argument
+    public void deleteUpcomingEvent(EventItem item) {
+        // Gets the data repository in write mode
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        // Define 'where' part of query.
+        String selection = String.valueOf(item.getmId());
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = null;
+
+        // Issue SQL statement.
+        db.delete(DBContract.EventItem.TABLE_NAME_UPCOMING, selection, selectionArgs);
+    }
+
     public void deleteAllUpcomingEvents() {
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -105,7 +124,7 @@ public class UpcomingCRUD {
         if (mDbHelper!=null) mDbHelper.close();
     }
 
-    public static EventItem getToDoItemFromCursor(Cursor cursor) {
+    public static EventItem getUpcomingEventFromCursor(Cursor cursor) {
 
         long ID = cursor.getInt(cursor.getColumnIndex(DBContract.EventItem._ID));
         String name = cursor.getString(cursor.getColumnIndex(DBContract.EventItem.COLUMN_NAME_NAME));

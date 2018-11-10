@@ -20,7 +20,7 @@ public class PastCRUD {
     /**
      * Singleton Implementation
      * @param context
-     * @return the instance of FavoritesCRUD
+     * @return the instance of PastCRUD
      */
     public static PastCRUD getInstance(Context context){
         if (mInstance==null)
@@ -67,7 +67,7 @@ public class PastCRUD {
 
     }
 
-    public long insertPast(EventItem item){
+    public long insertPastEvent(EventItem item){
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
@@ -87,6 +87,21 @@ public class PastCRUD {
 
         return newRowId;
     }
+
+    //Deletes the item by argument
+    public void deletePastEvent(EventItem item) {
+        // Gets the data repository in write mode
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        // Define 'where' part of query.
+        String selection = String.valueOf(item.getmId());
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = null;
+
+        // Issue SQL statement.
+        db.delete(DBContract.EventItem.TABLE_NAME_PAST, selection, selectionArgs);
+    }
+
 
     public void deleteAllPastEvents() {
         // Gets the data repository in write mode
