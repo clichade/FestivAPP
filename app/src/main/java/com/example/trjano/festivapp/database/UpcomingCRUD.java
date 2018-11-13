@@ -72,6 +72,46 @@ public class UpcomingCRUD {
 
     }
 
+    public EventItem getUpcomingEvent(long id){
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String[] projection = {
+                DBContract.EventItem._ID,
+                DBContract.EventItem.COLUMN_NAME_NAME,
+                DBContract.EventItem.COLUMN_NAME_CITY,
+                DBContract.EventItem.COLUMN_NAME_START_DATE,
+                DBContract.EventItem.COLUMN_NAME_END_DATE,
+                DBContract.EventItem.COLUMN_NAME_LOCATION,
+                DBContract.EventItem.COLUMN_NAME_ARTISTS,
+                DBContract.EventItem.COLUMN_NAME_TYPE
+        };
+        String selection = "_id = ?";
+        String[] selectionArgs = new String[]{
+                String.valueOf(id)
+        };
+
+        String sortOrder = null;
+
+        Cursor cursor = db.query(
+                DBContract.EventItem.TABLE_NAME_UPCOMING,           // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+        EventItem item = new EventItem();
+
+        if(cursor.getCount()>0) {
+            cursor.moveToFirst();
+            item = getUpcomingEventFromCursor(cursor);
+        }
+        cursor.close();
+        return item;
+    }
+
+
     public long insertUpcomingEvent(EventItem item){
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -99,9 +139,11 @@ public class UpcomingCRUD {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // Define 'where' part of query.
-        String selection = String.valueOf(item.getmId());
+        String selection = "_id = ?";
         // Specify arguments in placeholder order.
-        String[] selectionArgs = null;
+        String[] selectionArgs = new String []{
+                String.valueOf(item.getmId())
+        };
 
         // Issue SQL statement.
         db.delete(DBContract.EventItem.TABLE_NAME_UPCOMING, selection, selectionArgs);

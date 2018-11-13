@@ -20,10 +20,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         components_setup()
-
-        //Put your test here
-       // val db = AdminSQLiteOpenHelper(this,"Fav",null,1)
-
     }
 
 

@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.Toast
 import com.example.trjano.festivapp.database.AdminSQLiteOpenHelper
 import com.example.trjano.festivapp.database.EventItem
+import com.example.trjano.festivapp.database.UpcomingCRUD
 
 import kotlinx.android.synthetic.main.activity_event_list.*
 

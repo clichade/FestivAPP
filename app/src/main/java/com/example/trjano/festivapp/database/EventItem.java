@@ -30,6 +30,18 @@ public class EventItem {
         this.mType=type;
     }
 
+    public EventItem() {
+        this.mId=-1;
+        this.mName = "default";
+        this.mCity = "default";
+        this.mStartDate="default";
+        this.mEndDate="default";
+        this.mLocation="default";
+        this.mArtists="default";
+        this.mType="default";
+    }
+
+
     public long getmId() {
         return mId;
     }

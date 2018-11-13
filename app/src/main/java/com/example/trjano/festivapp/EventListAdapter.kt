@@ -1,5 +1,6 @@
 package com.example.trjano.festivapp
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -65,7 +66,6 @@ class EventListAdapter(private var mItems : ArrayList<EventItem>) :
     }
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-
 
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
