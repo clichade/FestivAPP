@@ -58,7 +58,7 @@ public class PastCRUD {
         if(cursor.getCount() > 0) {
             cursor.moveToFirst();
             do {
-                items.add(getToDoItemFromCursor(cursor));
+                items.add(getPastEventFromCursor(cursor));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -66,6 +66,47 @@ public class PastCRUD {
 
 
     }
+
+
+    public EventItem getPastEvent(long id){
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String[] projection = {
+                DBContract.EventItem._ID,
+                DBContract.EventItem.COLUMN_NAME_NAME,
+                DBContract.EventItem.COLUMN_NAME_CITY,
+                DBContract.EventItem.COLUMN_NAME_START_DATE,
+                DBContract.EventItem.COLUMN_NAME_END_DATE,
+                DBContract.EventItem.COLUMN_NAME_LOCATION,
+                DBContract.EventItem.COLUMN_NAME_ARTISTS,
+                DBContract.EventItem.COLUMN_NAME_TYPE
+        };
+        String selection = "_id = ?";
+        String[] selectionArgs = new String[]{
+                String.valueOf(id)
+        };
+
+        String sortOrder = null;
+
+        Cursor cursor = db.query(
+                DBContract.EventItem.TABLE_NAME_PAST,           // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+        EventItem item = new EventItem();
+
+        if(cursor.getCount()>0) {
+            cursor.moveToFirst();
+            item = getPastEventFromCursor(cursor);
+        }
+        cursor.close();
+        return item;
+    }
+
 
     public long insertPastEvent(EventItem item){
         // Gets the data repository in write mode
@@ -94,9 +135,11 @@ public class PastCRUD {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // Define 'where' part of query.
-        String selection = String.valueOf(item.getmId());
+        String selection = "_id = ?";
         // Specify arguments in placeholder order.
-        String[] selectionArgs = null;
+        String[] selectionArgs = new String[]{
+                String.valueOf(item.getmId())
+        };
 
         // Issue SQL statement.
         db.delete(DBContract.EventItem.TABLE_NAME_PAST, selection, selectionArgs);
@@ -120,7 +163,7 @@ public class PastCRUD {
         if (mDbHelper!=null) mDbHelper.close();
     }
 
-    public static EventItem getToDoItemFromCursor(Cursor cursor) {
+    public static EventItem getPastEventFromCursor(Cursor cursor) {
 
         long ID = cursor.getInt(cursor.getColumnIndex(DBContract.EventItem._ID));
         String name = cursor.getString(cursor.getColumnIndex(DBContract.EventItem.COLUMN_NAME_NAME));

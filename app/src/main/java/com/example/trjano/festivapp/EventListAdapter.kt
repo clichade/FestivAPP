@@ -1,5 +1,6 @@
 package com.example.trjano.festivapp
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -74,7 +75,6 @@ class EventListAdapter(private var mItems : ArrayList<EventItem>) :
         holder.view.eventlist_item_label_name.text = event.getmName()
         holder.view.eventlist_item_label_city.text = event.getmCity() + ":\n  " + event.getmLocation()
         holder.view.evenlist_item_label_date.text = event.getmStartDate()
-
 
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
