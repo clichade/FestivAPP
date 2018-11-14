@@ -1,14 +1,17 @@
 package com.example.trjano.festivapp
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.trjano.festivapp.database.EventItem
+import kotlinx.android.synthetic.main.event_list_item.view.*
+import org.jetbrains.anko.find
 
 class EventListAdapter(private var mItems : ArrayList<EventItem>) :
         RecyclerView.Adapter<EventListAdapter.MyViewHolder>() {
-    var onItemClick: ((String) -> Unit)? = null
+    var onItemClick: ((EventItem) -> Unit)? = null
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -17,7 +20,7 @@ class EventListAdapter(private var mItems : ArrayList<EventItem>) :
     inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         init {
             view.setOnClickListener {
-                onItemClick?.invoke(mItems[adapterPosition].toString())
+                onItemClick?.invoke(mItems[adapterPosition])
             }
         }
     }
@@ -27,15 +30,17 @@ class EventListAdapter(private var mItems : ArrayList<EventItem>) :
         return mItems[pos]
     }
 
+    fun update(newItems: ArrayList<EventItem>){
+        mItems.addAll(newItems)
+        notifyDataSetChanged()
+    }
+
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): EventListAdapter.MyViewHolder {
         // create a new view
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.event_list_item, parent, false) as View
-
-
-
 
         // set the view's size, margins, paddings and layout parameters
         return MyViewHolder(view)
@@ -65,6 +70,10 @@ class EventListAdapter(private var mItems : ArrayList<EventItem>) :
     }
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val event = getItem(position)
+        holder.view.eventlist_item_label_name.text = event.getmName()
+        holder.view.eventlist_item_label_city.text = event.getmCity() + ":\n  " + event.getmLocation()
+        holder.view.evenlist_item_label_date.text = event.getmStartDate()
 
 
         // - get element from your dataset at this position

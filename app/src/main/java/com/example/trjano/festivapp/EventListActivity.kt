@@ -15,6 +15,9 @@ import com.example.trjano.festivapp.database.AdminSQLiteOpenHelper
 import com.example.trjano.festivapp.database.EventItem
 
 import kotlinx.android.synthetic.main.activity_event_list.*
+import org.jetbrains.anko.async
+import org.jetbrains.anko.uiThread
+import java.io.Serializable
 
 class EventListActivity : AppCompatActivity() {
 
@@ -43,24 +46,19 @@ class EventListActivity : AppCompatActivity() {
 
     fun event_list_setup(){
 
-
         val list = arrayListOf<EventItem>()
-        var event1 = EventItem(0,"Evento1","Ciudad1","1/1/2018","2/1/2018","Localizacion1","Artista1","0")
-        var event2 = EventItem(1,"Evento2","Ciudad2","2/1/2018","3/1/2018","Localizacion2","Artista2","0")
-        var event3 = EventItem(2,"Evento3","Ciudad3","3/1/2018","4/1/2018","Localizacion3","Artista3","0")
-        var event4 = EventItem(3,"Evento4","Ciudad4","4/1/2018","5/1/2018","Localizacion4","Artista4","0")
-        list.addAll(listOf(event1, event2, event3,event4))
 
         viewManager = GridLayoutManager(this,2)
         viewAdapter = EventListAdapter(list)
 
 
-        viewAdapter.onItemClick = { String ->
-            Log.d("dev",String)
+        viewAdapter.onItemClick = { EventItem ->
+            Log.d("dev",EventItem.toString())
+
             val intent = Intent(this, EventActivity::class.java)
+            intent.putExtra("event",EventItem as Serializable)
             startActivity(intent)
         }
-
 
 
         event_list.apply {
@@ -75,6 +73,11 @@ class EventListActivity : AppCompatActivity() {
             adapter = viewAdapter
 
 
+        }
+
+       async {
+            val new_list = SongKickAPI.find("Caceres")
+            uiThread { viewAdapter.update(new_list) }
         }
 
     }

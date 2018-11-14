@@ -1,6 +1,8 @@
 package com.example.trjano.festivapp.database;
 
-public class EventItem {
+import java.io.Serializable;
+
+public class EventItem implements Serializable {
     public final static String ID = "ID";
     public final static String NAME = "name";
     public final static String CITY = "city";

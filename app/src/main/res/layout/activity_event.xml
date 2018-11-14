@@ -6,11 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".EventActivity">
 
+    <include layout="@layout/content_event"
+        app:layout_constraintStart_toEndOf="@id/eventlist_menu_layout"/>
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/eventlist_menu_layout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -22,17 +25,14 @@
             android:gravity="center"/>
 
 
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="56dp"
+            />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_event" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/event_image_layout"
@@ -160,32 +160,14 @@
             app:layout_constraintStart_toEndOf="@+id/event_label_date_from"
             app:layout_constraintTop_toBottomOf="@id/event_label_date" />
 
-        <TextView
-            android:id="@+id/event_label_date_to"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/event_date_from"
-            android:textSize="20dp"
-            android:textColor="@color/colorAccent"
-            android:text="@string/finder_label_date_to"/>
 
-        <TextView
-            android:id="@+id/event_date_to"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/test_date"
-            android:textColor="@color/primaryText"
-            android:textSize="20dp"
-            app:layout_constraintStart_toEndOf="@+id/event_label_date_to"
-            app:layout_constraintTop_toBottomOf="@id/event_date_from" />
 
         <TextView
             android:id="@+id/event_date_start_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/primaryText"
-            app:layout_constraintTop_toBottomOf="@id/event_date_to"
+            app:layout_constraintTop_toBottomOf="@id/event_date_from"
             android:textSize="20dp"
             android:text="08:00"/>
 

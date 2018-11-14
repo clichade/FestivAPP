@@ -10,7 +10,7 @@
 
     <string name="finder_label_name">Name</string>
     <string name="finder_hint_name"> Input Name</string>
-    <string name="finder_label_location">Location</string>
+    <string name="finder_label_location">Location*</string>
     <string name="finder_hint_location">Input Location</string>
     <string name="finder_label_date">Date</string>
     <string name="finder_label_date_from">From</string>
@@ -21,6 +21,12 @@
     <string name="details">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
     <string name="event_btn_link">SongKick</string>
     <string name="finder_label_type">Type</string>
+
+    <string name="finder_error_no_location">Please select a location.</string>
+    <string name="finder_error_location_invalid">Incorrect location, please select a correct one.</string>
+    <string name="finder_error_no_type_selected">No type of event has been selected.</string>
+    <string name="finder_error_no_end_date_selected">If start date is selected, end date must be selected too.</string>
+    <string name="finder_error_dates_invalid">End date must be settled after Start date.</string>
 
     <string name="event">Event</string>
     <string name="event_title"> Title name 2018</string>

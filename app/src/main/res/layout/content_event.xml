@@ -3,20 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:layout_height="56dp"
     tools:context=".EventActivity"
-    tools:showIn="@layout/activity_event">
+    tools:showIn="@layout/activity_event"
+    android:background="@color/colorPrimary">
 
     <ImageButton
-        android:id="@+id/event_ibtn_favorites"
+        android:id="@+id/event_btn_favorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
         android:background="@mipmap/ic_favorite_no"
+
         android:backgroundTint="#fbc02d"
+        app:layout_constraintEnd_toStartOf="@+id/event_btn_pending"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/event_btn_pending"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@mipmap/ic_pending_no"
+        android:backgroundTint="@android:color/holo_red_light"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/event_btn_assisted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+
+        android:background="@mipmap/ic_assisted_no"
+        android:backgroundTint="@android:color/darker_gray"
+        app:layout_constraintEnd_toStartOf="@+id/event_btn_favorites"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

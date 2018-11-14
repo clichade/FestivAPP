@@ -1,6 +1,7 @@
 package com.example.trjano.festivapp
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.IdRes
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import java.net.URL
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -24,6 +26,7 @@ class FinderActivity : AppCompatActivity() {
     private val et_date_to : EditText by bind(R.id.finder_et_date_to)
     private val cb_festival: CheckBox by bind(R.id.finder_checkbox_festival)
     private val cb_concert: CheckBox by bind(R.id.finder_checkbox_concert)
+    private val tv_error: TextView by bind(R.id.finder_label_error)
 
 
 
@@ -34,13 +37,9 @@ class FinderActivity : AppCompatActivity() {
 
 
 
-       thread () {
-            val result = URL("https://api.songkick.com/api/3.0/search/locations.json?query=Cáceres&apikey=${KEY}").readText()
-            Log.d("json", result)
-
-            val venue = URL("https://api.songkick.com/api/3.0/metro_areas/28712/calendar.json?apikey=${KEY}").readText()
-            Log.d("venue", venue)
-        }
+      /* thread () {
+           SongKickAPI.find("Cordoba")
+        }*/
     }
 
     fun components_setup() {
@@ -49,6 +48,7 @@ class FinderActivity : AppCompatActivity() {
         location_setup()
         date_from_setup()
         date_to_setup()
+        btn_setup()
     }
 
     /*
@@ -60,6 +60,66 @@ class FinderActivity : AppCompatActivity() {
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,locations_array)
         et_location.setAdapter(adapter)
         et_location.threshold = 2
+    }
+
+
+    fun btn_setup(){
+        btn_search.setOnClickListener {
+            if (!check_input_errors()){
+
+                val intent = Intent(this, EventActivity::class.java)
+
+                //location
+                intent.putExtra("location",et_location.text.toString())
+                startActivity(intent)
+            }
+
+        }
+    }
+
+    fun check_input_errors(): Boolean {
+        var isError= false
+
+        //if locations is empty
+        if (et_location.text.toString().isEmpty()){
+            tv_error.text = resources.getString(R.string.finder_error_no_location)
+            return true
+        }
+
+        //if locations does not belong to the list of locations
+        if (!resources.getStringArray(R.array.locations).contains(et_location.text.toString())){
+            tv_error.text = resources.getString(R.string.finder_error_location_invalid)
+            return true
+        }
+
+        //if date starts exists but date end doesn't the search can not be done
+        if (!et_date_from.text.toString().isEmpty() && et_date_to.text.toString().isEmpty()){
+            tv_error.text = resources.getString(R.string.finder_error_no_end_date_selected)
+            return true
+        }
+
+        val date1_start = SimpleDateFormat("dd/MM/yyyy").parse(et_date_from.text.toString())
+        val date1_end = SimpleDateFormat("dd/MM/yyyy").parse(et_date_to.text.toString())
+
+
+        Log.d("fecha","Inicio: " + date1_start.toString())
+        Log.d("fecha","Final: " + date1_end.toString())
+
+        //if date end is sooner than date start the search can not be done
+        if (date1_start > date1_end){
+            tv_error.text = resources.getString(R.string.finder_error_dates_invalid)
+            return true
+        }
+
+        if(!cb_concert.isChecked && !cb_festival.isChecked){
+            tv_error.text = resources.getString(R.string.finder_error_no_type_selected)
+            return true
+        }
+
+
+
+
+        return isError
     }
 
 
