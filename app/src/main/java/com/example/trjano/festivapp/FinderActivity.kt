@@ -14,10 +14,8 @@ import java.util.*
 import kotlin.concurrent.thread
 
 class FinderActivity : AppCompatActivity() {
-    enum class Focus {NONE, NAME, LOCATION, DATE_FROM, DATE_TO}
 
     val KEY: String = "BsmQKU834Qlfu4Ap"
-    var FOCUS : Focus = Focus.NONE
 
     private val btn_search : Button by bind(R.id.finder_btn_search)//Delegate
     private val et_name : EditText by bind(R.id.finder_et_name);
@@ -43,7 +41,6 @@ class FinderActivity : AppCompatActivity() {
     }
 
     fun components_setup() {
-        FOCUS = Focus.NONE
 
         location_setup()
         date_from_setup()
@@ -67,7 +64,12 @@ class FinderActivity : AppCompatActivity() {
         btn_search.setOnClickListener {
             if (!check_input_errors()){
 
-                val intent = Intent(this, EventActivity::class.java)
+
+
+                val intent = Intent(this, EventListActivity::class.java)
+
+                if (et_name.text.toString().isNotEmpty())
+
 
                 //location
                 intent.putExtra("location",et_location.text.toString())
@@ -98,17 +100,20 @@ class FinderActivity : AppCompatActivity() {
             return true
         }
 
-        val date1_start = SimpleDateFormat("dd/MM/yyyy").parse(et_date_from.text.toString())
-        val date1_end = SimpleDateFormat("dd/MM/yyyy").parse(et_date_to.text.toString())
+
+        if (!et_date_from.text.toString().isEmpty() && !et_date_to.text.toString().isEmpty()) {
+            val date1_start = SimpleDateFormat("dd/MM/yyyy").parse(et_date_from.text.toString())
+            val date1_end = SimpleDateFormat("dd/MM/yyyy").parse(et_date_to.text.toString())
 
 
-        Log.d("fecha","Inicio: " + date1_start.toString())
-        Log.d("fecha","Final: " + date1_end.toString())
+            Log.d("fecha", "Inicio: " + date1_start.toString())
+            Log.d("fecha", "Final: " + date1_end.toString())
 
-        //if date end is sooner than date start the search can not be done
-        if (date1_start > date1_end){
-            tv_error.text = resources.getString(R.string.finder_error_dates_invalid)
-            return true
+            //if date end is sooner than date start the search can not be done
+            if (date1_start > date1_end) {
+                tv_error.text = resources.getString(R.string.finder_error_dates_invalid)
+                return true
+            }
         }
 
         if(!cb_concert.isChecked && !cb_festival.isChecked){

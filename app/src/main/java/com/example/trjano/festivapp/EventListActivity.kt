@@ -33,6 +33,11 @@ class EventListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_event_list)
 
         components_setup()
+
+
+        if (intent.extras.getString("Type").isNullOrBlank()) load_search()
+        else load_table()
+
     }
 
     fun <T : View> AppCompatActivity.bind(@IdRes res : Int) : Lazy<T> {
@@ -43,6 +48,21 @@ class EventListActivity : AppCompatActivity() {
 
     fun components_setup(){
         event_list_setup()
+    }
+
+
+    fun load_table(){
+
+    }
+
+    fun load_search(){
+
+        val location = intent.extras.getString("location")
+        async {
+            val new_list = SongKickAPI.find(location)
+            uiThread { viewAdapter.update(new_list) }
+        }
+
     }
 
     fun event_list_setup(){
@@ -74,11 +94,6 @@ class EventListActivity : AppCompatActivity() {
             adapter = viewAdapter
 
 
-        }
-
-       async {
-            val new_list = SongKickAPI.find("Caceres")
-            uiThread { viewAdapter.update(new_list) }
         }
 
     }

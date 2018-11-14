@@ -49,12 +49,12 @@ class EventActivity : AppCompatActivity() {
 
     fun components_setup(){
 
-        val eventItem = intent.extras.get("event") as EventItem
+       /* val eventItem = intent.extras.get("event") as EventItem
         tv_name.text = eventItem.getmName()
         tv_artists.text = eventItem.getmArtists()
         tv_location_city.text = eventItem.getmCity()
         tv_location_exact.text = eventItem.getmLocation()
-        tv_date_from.text = eventItem.getmStartDate()
+        tv_date_from.text = eventItem.getmStartDate()*/
 
         btn_setup()
 
