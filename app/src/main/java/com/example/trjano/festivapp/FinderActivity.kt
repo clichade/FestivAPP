@@ -69,7 +69,7 @@ class FinderActivity : AppCompatActivity() {
                 val intent = Intent(this, EventListActivity::class.java)
 
                 if (et_name.text.toString().isNotEmpty())
-
+                    intent.putExtra("name", et_name.text.toString())
 
                 //location
                 intent.putExtra("location",et_location.text.toString())
