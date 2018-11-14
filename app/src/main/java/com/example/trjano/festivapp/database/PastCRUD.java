@@ -35,7 +35,6 @@ public class PastCRUD {
                 DBContract.EventItem.COLUMN_NAME_NAME,
                 DBContract.EventItem.COLUMN_NAME_CITY,
                 DBContract.EventItem.COLUMN_NAME_START_DATE,
-                DBContract.EventItem.COLUMN_NAME_END_DATE,
                 DBContract.EventItem.COLUMN_NAME_LOCATION,
                 DBContract.EventItem.COLUMN_NAME_ARTISTS,
                 DBContract.EventItem.COLUMN_NAME_TYPE
@@ -76,7 +75,6 @@ public class PastCRUD {
                 DBContract.EventItem.COLUMN_NAME_NAME,
                 DBContract.EventItem.COLUMN_NAME_CITY,
                 DBContract.EventItem.COLUMN_NAME_START_DATE,
-                DBContract.EventItem.COLUMN_NAME_END_DATE,
                 DBContract.EventItem.COLUMN_NAME_LOCATION,
                 DBContract.EventItem.COLUMN_NAME_ARTISTS,
                 DBContract.EventItem.COLUMN_NAME_TYPE
@@ -117,7 +115,6 @@ public class PastCRUD {
         values.put(DBContract.EventItem.COLUMN_NAME_NAME, item.getmName());
         values.put(DBContract.EventItem.COLUMN_NAME_CITY, item.getmCity());
         values.put(DBContract.EventItem.COLUMN_NAME_START_DATE, item.getmStartDate());
-        values.put(DBContract.EventItem.COLUMN_NAME_END_DATE, item.getmEndDate());
         values.put(DBContract.EventItem.COLUMN_NAME_LOCATION, item.getmLocation());
         values.put(DBContract.EventItem.COLUMN_NAME_ARTISTS, item.getmArtists());
         values.put(DBContract.EventItem.COLUMN_NAME_TYPE, item.getmType());
@@ -169,13 +166,12 @@ public class PastCRUD {
         String name = cursor.getString(cursor.getColumnIndex(DBContract.EventItem.COLUMN_NAME_NAME));
         String city = cursor.getString(cursor.getColumnIndex(DBContract.EventItem.COLUMN_NAME_CITY));
         String startDate = cursor.getString(cursor.getColumnIndex(DBContract.EventItem.COLUMN_NAME_START_DATE));
-        String endDate = cursor.getString(cursor.getColumnIndex(DBContract.EventItem.COLUMN_NAME_END_DATE));
         String location = cursor.getString(cursor.getColumnIndex(DBContract.EventItem.COLUMN_NAME_LOCATION));
         String artists = cursor.getString(cursor.getColumnIndex(DBContract.EventItem.COLUMN_NAME_ARTISTS));
         String type = cursor.getString(cursor.getColumnIndex(DBContract.EventItem.COLUMN_NAME_TYPE));
 
 
-        EventItem item = new EventItem(ID,name,city,startDate,endDate,location,artists,type);
+        EventItem item = new EventItem(ID,name,city,startDate,location,artists,type);
 
         Log.d("PastCRUD",item.toLog());
 

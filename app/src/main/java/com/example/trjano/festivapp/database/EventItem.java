@@ -3,30 +3,19 @@ package com.example.trjano.festivapp.database;
 import java.io.Serializable;
 
 public class EventItem implements Serializable {
-    public final static String ID = "ID";
-    public final static String NAME = "name";
-    public final static String CITY = "city";
-    public final static String START_DATE = "start_date";
-    public final static String END_DATE = "end_date";
-    public final static String LOCATION = "location";
-    public final static String ARTISTS = "artists";
-    public final static String TYPE = "type";
-
     private long mId;
     private String mName;
     private String mCity;
     private String mStartDate;
-    private String mEndDate;
     private String mLocation;
     private String mArtists;
     private String mType;
 
-    public EventItem(long id, String name, String city, String startDate, String endDate, String location, String artists, String type) {
+    public EventItem(long id, String name, String city, String startDate, String location, String artists, String type) {
         this.mId=id;
         this.mName = name;
         this.mCity = city;
         this.mStartDate=startDate;
-        this.mEndDate=endDate;
         this.mLocation=location;
         this.mArtists=artists;
         this.mType=type;
@@ -37,7 +26,6 @@ public class EventItem implements Serializable {
         this.mName = "default";
         this.mCity = "default";
         this.mStartDate="default";
-        this.mEndDate="default";
         this.mLocation="default";
         this.mArtists="default";
         this.mType="default";
@@ -76,14 +64,6 @@ public class EventItem implements Serializable {
         this.mStartDate = mStartDate;
     }
 
-    public String getmEndDate() {
-        return mEndDate;
-    }
-
-    public void setmEndDate(String mEndDate) {
-        this.mEndDate = mEndDate;
-    }
-
     public String getmLocation() {
         return mLocation;
     }
@@ -114,7 +94,6 @@ public class EventItem implements Serializable {
     public String toLog() {
         return "ID: "+mId+ ITEM_SEP+"Name:"+mName+ITEM_SEP+
                 "City:"+mCity+ITEM_SEP+"Start date:"+mStartDate+ITEM_SEP+
-                "End date:"+mEndDate+ITEM_SEP+"Location:"+mLocation+ITEM_SEP+
                 "Artists:"+mArtists+ITEM_SEP+"Type:"+mType;
     }
     @Override
@@ -124,7 +103,6 @@ public class EventItem implements Serializable {
                 ", mName='" + mName + '\'' +
                 ", mCity='" + mCity + '\'' +
                 ", mStartDate='" + mStartDate + '\'' +
-                ", mEndDate='" + mEndDate + '\'' +
                 ", mLocation='" + mLocation + '\'' +
                 ", mArtists='" + mArtists + '\'' +
                 ", mType='" + mType + '\'' +

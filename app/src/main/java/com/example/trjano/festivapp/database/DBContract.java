@@ -13,13 +13,9 @@ public final class DBContract {
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_CITY = "city";
         public static final String COLUMN_NAME_START_DATE = "start_date";
-        public static final String COLUMN_NAME_END_DATE = "end_date";
         public static final String COLUMN_NAME_LOCATION = "location";
         public static final String COLUMN_NAME_ARTISTS = "artists";
         public static final String COLUMN_NAME_TYPE = "type";
-
-
-
 
     }
 }

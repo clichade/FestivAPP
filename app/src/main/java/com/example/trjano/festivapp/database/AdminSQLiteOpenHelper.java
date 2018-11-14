@@ -17,7 +17,6 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                     DBContract.EventItem.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                     DBContract.EventItem.COLUMN_NAME_CITY + TEXT_TYPE + COMMA_SEP +
                     DBContract.EventItem.COLUMN_NAME_START_DATE + TEXT_TYPE + COMMA_SEP +
-                    DBContract.EventItem.COLUMN_NAME_END_DATE + TEXT_TYPE + COMMA_SEP+
                     DBContract.EventItem.COLUMN_NAME_LOCATION + TEXT_TYPE + COMMA_SEP+
                     DBContract.EventItem.COLUMN_NAME_ARTISTS + TEXT_TYPE + COMMA_SEP+
                     DBContract.EventItem.COLUMN_NAME_TYPE + TEXT_TYPE +
@@ -29,7 +28,6 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                     DBContract.EventItem.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                     DBContract.EventItem.COLUMN_NAME_CITY + TEXT_TYPE + COMMA_SEP +
                     DBContract.EventItem.COLUMN_NAME_START_DATE + TEXT_TYPE + COMMA_SEP +
-                    DBContract.EventItem.COLUMN_NAME_END_DATE + TEXT_TYPE + COMMA_SEP+
                     DBContract.EventItem.COLUMN_NAME_LOCATION + TEXT_TYPE + COMMA_SEP+
                     DBContract.EventItem.COLUMN_NAME_ARTISTS + TEXT_TYPE + COMMA_SEP+
                     DBContract.EventItem.COLUMN_NAME_TYPE + TEXT_TYPE +
@@ -41,7 +39,6 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                     DBContract.EventItem.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                     DBContract.EventItem.COLUMN_NAME_CITY + TEXT_TYPE + COMMA_SEP +
                     DBContract.EventItem.COLUMN_NAME_START_DATE + TEXT_TYPE + COMMA_SEP +
-                    DBContract.EventItem.COLUMN_NAME_END_DATE + TEXT_TYPE + COMMA_SEP+
                     DBContract.EventItem.COLUMN_NAME_LOCATION + TEXT_TYPE + COMMA_SEP+
                     DBContract.EventItem.COLUMN_NAME_ARTISTS + TEXT_TYPE + COMMA_SEP+
                     DBContract.EventItem.COLUMN_NAME_TYPE + TEXT_TYPE +
