@@ -8,12 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.EventLog
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.example.trjano.festivapp.database.AdminSQLiteOpenHelper
-import com.example.trjano.festivapp.database.EventItem
-import com.example.trjano.festivapp.database.UpcomingCRUD
+import com.example.trjano.festivapp.database.*
 
 import kotlinx.android.synthetic.main.activity_event_list.*
 import org.jetbrains.anko.async
@@ -34,7 +33,6 @@ class EventListActivity : AppCompatActivity() {
 
         components_setup()
 
-
         if (intent.extras.getString("Type").isNullOrBlank()) load_search()
         else load_table()
 
@@ -52,14 +50,35 @@ class EventListActivity : AppCompatActivity() {
 
 
     fun load_table(){
+        var new_list: List<EventItem>
+        Log.d("cargatabla","Ha entrado")
+
+        when (intent.extras.getString("Type")){
+            "FAVORITES_EVENTS" -> new_list = FavoritesCRUD.getInstance(this).allFavorites
+            "UPCOMING_EVENTS" -> new_list = UpcomingCRUD.getInstance(this).allUpcomingEvents
+            "PAST_EVENTS" -> new_list = PastCRUD.getInstance(this).allPastEvents
+            else -> new_list = ArrayList<EventItem>()
+        }
+
+
+        async {
+            uiThread { viewAdapter.update(ArrayList(new_list)) }
+        }
+
+
 
     }
 
     fun load_search(){
 
         val location = intent.extras.getString("location")
+        val name = intent.extras.getString("name")
+
         async {
-            val new_list = SongKickAPI.find(location)
+            var new_list = ArrayList<EventItem>()
+            if (!name.isNullOrBlank())  new_list = SongKickAPI.find(location,name)
+            else  new_list = SongKickAPI.find(location)
+
             uiThread { viewAdapter.update(new_list) }
         }
 

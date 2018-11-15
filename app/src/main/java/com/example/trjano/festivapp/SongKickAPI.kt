@@ -73,7 +73,6 @@ class SongKickAPI {
             val name = event_json.getString("displayName").substringBefore(" at ")
             val city = event_json.getJSONObject("location").getString("city")
             val start_date = event_json.getJSONObject("start").getString("date")
-            val end_date = "Corregir" //Todo implementar en date posible eliminacion
             val location = event_json.getJSONObject("venue").getString("displayName")
             val artists = getArtistFromJson(event_json.getJSONArray("performance"))
 
@@ -81,7 +80,7 @@ class SongKickAPI {
             var type = "0"//Check if it is a festival or a concert
             if (type_real.equals("Festival")) {type = "1"}
 
-            val event = EventItem(id.toLong(),name,city,start_date,end_date,location,artists,type)
+            val event = EventItem(id.toLong(),name,city,start_date,location,artists,type)
             return event
         }
 

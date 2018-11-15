@@ -28,6 +28,13 @@
     <string name="finder_error_no_end_date_selected">If start date is selected, end date must be selected too.</string>
     <string name="finder_error_dates_invalid">End date must be settled after Start date.</string>
 
+    <string name="toast_add_favorites">Event added to favorites</string>
+    <string name="toast_add_pending">Event added to pending</string>
+    <string name="toast_add_assisted">Event added to assisted</string>
+    <string name="toast_removed_favor">Event removed from favorites</string>
+    <string name="toast_removed_pending">Event removed from pending</string>
+    <string name="toast_removed_assisted">Event removed from assisted</string>
+
     <string name="event">Event</string>
     <string name="event_title"> Title name 2018</string>
     <string name="event_artists">"Artist1, Artist2, ArtistGroup3, Artistgroup4, Artist5, ArtistBand6, Artistband7"</string>
