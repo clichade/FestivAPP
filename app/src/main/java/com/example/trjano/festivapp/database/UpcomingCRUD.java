@@ -109,6 +109,48 @@ public class UpcomingCRUD {
         return item;
     }
 
+    /**
+     * Returns true if the Event exists in the UpcomingEvents table
+     * @param id of the Event
+     * @return boolean
+     */
+    public boolean exists(long id){
+        boolean exists;
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String[] projection = {
+                DBContract.EventItem._ID,
+                DBContract.EventItem.COLUMN_NAME_NAME,
+                DBContract.EventItem.COLUMN_NAME_CITY,
+                DBContract.EventItem.COLUMN_NAME_START_DATE,
+                DBContract.EventItem.COLUMN_NAME_LOCATION,
+                DBContract.EventItem.COLUMN_NAME_ARTISTS,
+                DBContract.EventItem.COLUMN_NAME_TYPE
+        };
+        String selection = "_id = ?";
+        String[] selectionArgs = new String[]{
+                String.valueOf(id)
+        };
+
+        String sortOrder = null;
+
+        Cursor cursor = db.query(
+                DBContract.EventItem.TABLE_NAME_UPCOMING,           // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        if(cursor.getCount()>0) {
+            exists = true;
+        }else
+            exists = false;
+        cursor.close();
+        return exists;
+    }
 
     public long insertUpcomingEvent(EventItem item){
         // Gets the data repository in write mode
