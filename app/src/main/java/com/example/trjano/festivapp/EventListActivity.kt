@@ -76,8 +76,12 @@ class EventListActivity : AppCompatActivity() {
 
         async {
             var new_list = ArrayList<EventItem>()
-            if (!name.isNullOrBlank())  new_list = SongKickAPI.find(location,name)
-            else  new_list = SongKickAPI.find(location)
+
+            when {
+            !name.isNullOrBlank() -> new_list = SongKickAPI.find(location,name)
+            else  -> new_list = SongKickAPI.find(location)
+            }
+
 
             uiThread { viewAdapter.update(new_list) }
         }
