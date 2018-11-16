@@ -35,9 +35,9 @@ class FinderActivity : AppCompatActivity() {
 
 
 
-      /* thread () {
-           SongKickAPI.find("Cordoba")
-        }*/
+        /* thread () {
+             SongKickAPI.find("Cordoba")
+          }*/
     }
 
     fun components_setup() {
