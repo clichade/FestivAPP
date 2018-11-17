@@ -39,14 +39,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/eventlist_menu_layout">
-        <TextView
+        <ImageView
+            android:id="@+id/event_imageview"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:text="@string/placeholder"
+            android:layout_height="160dp"
             android:textSize="40dp"
             android:textAlignment="center"
             android:gravity="center"
-            android:background="@color/design_default_color_primary"/>
+            android:background="@drawable/image_festival"
+            />
     </android.support.constraint.ConstraintLayout>
 
     <ScrollView

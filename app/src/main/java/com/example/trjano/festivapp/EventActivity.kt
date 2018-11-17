@@ -11,12 +11,14 @@ import android.support.annotation.IdRes
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.example.trjano.festivapp.database.EventItem
 import com.example.trjano.festivapp.database.FavoritesCRUD
 import com.example.trjano.festivapp.database.PastCRUD
 import com.example.trjano.festivapp.database.UpcomingCRUD
+import kotlinx.android.synthetic.main.event_list_item.view.*
 import org.jetbrains.anko.backgroundDrawable
 import org.jetbrains.anko.toast
 
@@ -29,6 +31,7 @@ class EventActivity : AppCompatActivity() {
     private val tv_location_exact : TextView by bind(R.id.event_location_exact)
     private val tv_date_from : TextView by bind(R.id.event_date_from)
     private val tv_start_time : TextView by bind(R.id.event_date_start_time)
+    private val image: ImageView by bind(R.id.event_imageview)
 
     private val btn_favorite : ImageButton by bind(R.id.event_btn_favorites)
     private val btn_pending : ImageButton by bind(R.id.event_btn_pending)
@@ -54,6 +57,10 @@ class EventActivity : AppCompatActivity() {
     fun components_setup(){
 
         val eventItem = intent.extras.get("event") as EventItem
+
+        if (eventItem.getmType() == "0") image.setBackgroundResource(R.drawable.image_concert)
+        else image.setBackgroundResource(R.drawable.image_festival)
+
         tv_name.text = eventItem.getmName()
         tv_artists.text = eventItem.getmArtists()
         tv_location_city.text = eventItem.getmCity()

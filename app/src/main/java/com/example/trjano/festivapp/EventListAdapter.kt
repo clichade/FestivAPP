@@ -72,6 +72,10 @@ class EventListAdapter(private var mItems : ArrayList<EventItem>) :
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val event = getItem(position)
+
+        if(event.getmType() == "1") holder.view.eventlist_item_imageview.setBackgroundResource(R.drawable.image_festival)
+        else holder.view.eventlist_item_imageview.setBackgroundResource(R.drawable.image_concert)
+
         holder.view.eventlist_item_label_name.text = event.getmName()
         holder.view.eventlist_item_label_city.text = event.getmCity() + ":\n  " + event.getmLocation()
         holder.view.evenlist_item_label_date.text = event.getmStartDate()
