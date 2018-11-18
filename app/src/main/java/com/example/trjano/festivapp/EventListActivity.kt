@@ -3,18 +3,16 @@ package com.example.trjano.festivapp
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IdRes
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.EventLog
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import com.example.trjano.festivapp.database.*
+import com.example.trjano.festivapp.database.AppDatabase
+import com.example.trjano.festivapp.eventhierarchy.EventItem
+import com.example.trjano.festivapp.eventhierarchy.FavoriteItem
+import com.example.trjano.festivapp.eventhierarchy.UpcomingItem
 
-import kotlinx.android.synthetic.main.activity_event_list.*
 import org.jetbrains.anko.async
 import org.jetbrains.anko.uiThread
 import java.io.Serializable
@@ -22,7 +20,6 @@ import java.io.Serializable
 class EventListActivity : AppCompatActivity() {
 
     private val event_list : RecyclerView by bind(R.id.eventlist_list)
-  //  private val mItems = arrayListOf<EventItem>()
     private lateinit var viewAdapter: EventListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -50,14 +47,16 @@ class EventListActivity : AppCompatActivity() {
 
 
     fun load_table(){
+        val db : AppDatabase = AppDatabase.getDatabase(this)
+
         var new_list: List<EventItem>
         Log.d("cargatabla","Ha entrado")
 
         when (intent.extras.getString("Type")){
-            "FAVORITES_EVENTS" -> new_list = FavoritesCRUD.getInstance(this).allFavorites
-            "UPCOMING_EVENTS" -> new_list = UpcomingCRUD.getInstance(this).allUpcomingEvents
-            "PAST_EVENTS" -> new_list = PastCRUD.getInstance(this).allPastEvents
-            else -> new_list = ArrayList<EventItem>()
+            "FAVORITES_EVENTS" -> new_list = db.eventDAO().getAllFavorites() as List<EventItem>
+            "UPCOMING_EVENTS" -> new_list = db.eventDAO().getAllUpcomingEvents() as List<EventItem>
+            "PAST_EVENTS" -> new_list = db.eventDAO().getAllPastEvents() as List<EventItem>
+            else -> new_list = ArrayList()
         }
 
 

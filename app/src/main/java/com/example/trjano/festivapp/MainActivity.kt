@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.support.annotation.IdRes
 import android.view.View
 import android.widget.Button
-import com.example.trjano.festivapp.database.AdminSQLiteOpenHelper
-import org.jetbrains.anko.async
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,21 +29,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         btn_favorites.setOnClickListener(){
-            //Todo Implementar el funcionamiento del botón favoritos
             val intent = Intent(this, EventListActivity::class.java)
             intent.putExtra("Type","FAVORITES_EVENTS")
             startActivity(intent)
         }
 
         btn_pending.setOnClickListener(){
-            //Todo Implementar el funcionamiento del botón pendientes
             val intent = Intent(this, EventListActivity::class.java)
             intent.putExtra("Type","UPCOMING_EVENTS")
             startActivity(intent)
         }
 
         btn_assisted.setOnClickListener(){
-            //Todo Implementar el funcionamiento del botón asistidos
             val intent = Intent(this, EventListActivity::class.java)
             intent.putExtra("Type","PAST_EVENTS")
             startActivity(intent)
