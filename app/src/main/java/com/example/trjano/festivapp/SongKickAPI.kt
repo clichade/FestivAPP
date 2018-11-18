@@ -1,12 +1,10 @@
 package com.example.trjano.festivapp
 
-import android.util.Log
-import com.example.trjano.festivapp.database.EventItem
+import com.example.trjano.festivapp.eventhierarchy.EventItem
 import org.json.JSONArray
 
 import org.json.JSONObject
 import java.net.URL
-import java.security.Key
 
 class SongKickAPI {
     companion object {
@@ -52,7 +50,7 @@ class SongKickAPI {
             // var event1 = EventItem(0,"Evento1","Ciudad1","1/1/2018","2/1/2018","Localizacion1","Artista1","0")
             for (i in 0..(events.length() -1)) {
                 var event_item: EventItem = genEventFromJson(events.getJSONObject(i))
-                if (event_item.getmName().contains(event_name,true)) {
+                if (event_item.getMName().contains(event_name,true)) {
                     event_list.add(event_item)
                 }
 
