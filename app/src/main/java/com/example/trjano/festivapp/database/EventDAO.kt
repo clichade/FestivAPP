@@ -24,21 +24,6 @@ interface EventDAO {
     fun getAllUpcomingEvents(): List<EventItem>
 
 
-    /*******************
-     * getEvents methods
-     *******************/
-
-    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem._ID+" = :id" +
-            " AND "+DBContract.EventItem.FAVORITE+"=1")
-    fun getFavorite(id: Long): EventItem
-
-    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem._ID+" = :id " +
-            "AND "+DBContract.EventItem.ASSISTED+"=1")
-    fun getPastEvent(id: Long): EventItem
-
-    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem._ID+" = :id " +
-            "AND "+DBContract.EventItem.UPCOMING+"=1")
-    fun getUpcomingEvent(id: Long): EventItem
 
     /********************
      * deleteAll methods
@@ -54,13 +39,16 @@ interface EventDAO {
     fun deleteAllFavorites()
 
 
-    /*******************
-     * insert and delete
-     *******************/
+    /************************
+     * Get, insert and delete
+     ************************/
     @Insert
     fun insertEvent(item: EventItem): Long
 
     @Delete
     fun deleteEvent(item: EventItem)
+
+    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem._ID+" = :id")
+    fun getEvent(id: Long): EventItem
 
 }
