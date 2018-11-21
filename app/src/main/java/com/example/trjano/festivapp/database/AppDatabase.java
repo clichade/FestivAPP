@@ -5,11 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import com.example.trjano.festivapp.eventhierarchy.FavoriteItem;
-import com.example.trjano.festivapp.eventhierarchy.PastItem;
-import com.example.trjano.festivapp.eventhierarchy.UpcomingItem;
-
-@Database(entities = {FavoriteItem.class,UpcomingItem.class,PastItem.class}, version = 1)
+@Database(entities = {EventItem.class}, version = 1)
  public abstract class AppDatabase extends RoomDatabase {
    private static AppDatabase instance;
 

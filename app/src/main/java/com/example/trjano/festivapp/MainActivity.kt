@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun components_setup(){
+    private fun components_setup(){
         btn_search.setOnClickListener{
             val intent = Intent(this, FinderActivity::class.java)
             startActivity(intent)
@@ -48,7 +48,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun <T : View> AppCompatActivity.bind(@IdRes res : Int) : Lazy<T> {
-        @Suppress("UNCHECKED_CAST")
-        return lazy { findViewById(res) as T }
+        return lazy { findViewById<T>(res) }
     }
 }

@@ -9,9 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import com.example.trjano.festivapp.database.AppDatabase
-import com.example.trjano.festivapp.eventhierarchy.EventItem
-import com.example.trjano.festivapp.eventhierarchy.FavoriteItem
-import com.example.trjano.festivapp.eventhierarchy.UpcomingItem
+import com.example.trjano.festivapp.database.EventItem
 
 import org.jetbrains.anko.async
 import org.jetbrains.anko.uiThread
@@ -36,8 +34,7 @@ class EventListActivity : AppCompatActivity() {
     }
 
     fun <T : View> AppCompatActivity.bind(@IdRes res : Int) : Lazy<T> {
-        @Suppress("UNCHECKED_CAST")
-        return lazy { findViewById(res) as T }
+        return lazy { findViewById<T>(res) }
     }
 
 
@@ -53,9 +50,9 @@ class EventListActivity : AppCompatActivity() {
         Log.d("cargatabla","Ha entrado")
 
         when (intent.extras.getString("Type")){
-            "FAVORITES_EVENTS" -> new_list = db.eventDAO().getAllFavorites() as List<EventItem>
-            "UPCOMING_EVENTS" -> new_list = db.eventDAO().getAllUpcomingEvents() as List<EventItem>
-            "PAST_EVENTS" -> new_list = db.eventDAO().getAllPastEvents() as List<EventItem>
+            "FAVORITES_EVENTS" -> new_list = db.eventDAO().getAllFavorites()
+            "UPCOMING_EVENTS" -> new_list = db.eventDAO().getAllUpcomingEvents()
+            "PAST_EVENTS" -> new_list = db.eventDAO().getAllPastEvents()
             else -> new_list = ArrayList()
         }
 
@@ -74,7 +71,7 @@ class EventListActivity : AppCompatActivity() {
         val name = intent.extras.getString("name")
 
         async {
-            var new_list = ArrayList<EventItem>()
+            var new_list: ArrayList<EventItem>
 
             when {
             !name.isNullOrBlank() -> new_list = SongKickAPI.find(location,name)
