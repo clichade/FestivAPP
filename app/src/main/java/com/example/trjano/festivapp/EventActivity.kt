@@ -68,19 +68,21 @@ class EventActivity : AppCompatActivity() {
      */
     fun check_status(){
         val event = intent.extras.get("event") as EventItem
+        val db : AppDatabase = getDatabase(this)
+
         //TODO: Cuelga aquí, hay que implementar el async posiblmente:
         //TODO: annot access database on the main thread since it may potentially lock the UI for a long period of time.
-        if (event.getmFavorite()==1){
+        if (db.eventDAO().getEvent(event._id).getmFavorite()==1){
             btn_favorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite)
             is_fav = true
         }
 
-        if (event.getmUpcoming()==1){
+        if (db.eventDAO().getEvent(event._id).getmUpcoming()==1){
             btn_pending.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending)
             is_pending = true
         }
 
-        if (event.getmAssisted()==1){
+        if (db.eventDAO().getEvent(event._id).getmAssisted()==1){
             btn_assisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted)
             is_assisted = true
         }
@@ -95,12 +97,13 @@ class EventActivity : AppCompatActivity() {
         val db : AppDatabase = getDatabase(this)
         btn_favorite.setOnClickListener {
 
-            if (event.getmFavorite()==1) {
+            if (is_fav) {
                 db.eventDAO().deleteEvent(event)
                 btn_favorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite_no)
                 is_fav = false
                 toast(resources.getString(R.string.toast_removed_favor))
             } else {
+                event.setmFavorite(1)
                 db.eventDAO().insertEvent(event)
                 btn_favorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite)
                 is_fav = true
@@ -111,13 +114,14 @@ class EventActivity : AppCompatActivity() {
 
 
         btn_pending.setOnClickListener {
-            if(event.getmUpcoming()==1){
+            if(is_pending){
                 db.eventDAO().deleteEvent(event)
                 btn_pending.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending_no)
                 is_pending = false
                 toast(resources.getString(R.string.toast_removed_pending))
             }
             else {
+                event.setmUpcoming(1)
                 db.eventDAO().insertEvent(event)
                 btn_pending.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending)
                 is_pending = true
@@ -128,13 +132,14 @@ class EventActivity : AppCompatActivity() {
         }
 
         btn_assisted.setOnClickListener {
-            if(event.getmAssisted()==1){
+            if(is_assisted){
                 db.eventDAO().deleteEvent(event)
                 btn_assisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted_no)
                 is_assisted = false
                 toast(resources.getString(R.string.toast_removed_assisted))
             }
             else {
+                event.setmAssisted(1)
                 db.eventDAO().insertEvent(event)
                 btn_assisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted)
                 is_assisted = true
