@@ -50,14 +50,14 @@ class EventActivity : AppCompatActivity() {
     fun components_setup(){
 
         val eventItem = intent.extras.get("event") as EventItem
-        tv_name.text = eventItem.mName
-        tv_artists.text = eventItem.mArtists
-        tv_location_city.text = eventItem.mCity
-        tv_location_exact.text = eventItem.mLocation
-        tv_date_from.text = eventItem.mStartDate
+        tv_name.text = eventItem.name
+        tv_artists.text = eventItem.artists
+        tv_location_city.text = eventItem.city
+        tv_location_exact.text = eventItem.location
+        tv_date_from.text = eventItem.startDate
 
-        check_status()
-        btn_setup()
+        check_status(eventItem)
+        btn_setup(eventItem)
 
 
     }
@@ -66,23 +66,22 @@ class EventActivity : AppCompatActivity() {
      * Comprueba si pertenece a una tabla o no, debe ir antes de btn_setup()
      *
      */
-    fun check_status(){
-        val event = intent.extras.get("event") as EventItem
+    fun check_status(event: EventItem){
         val db : AppDatabase = getDatabase(this)
 
         //TODO: Cuelga aquí, hay que implementar el async posiblmente:
         //TODO: annot access database on the main thread since it may potentially lock the UI for a long period of time.
-        if (db.eventDAO().getEvent(event._id).getmFavorite()==1){
+        if (db.eventDAO().getEvent(event._id).favorite==1){
             btn_favorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite)
             is_fav = true
         }
 
-        if (db.eventDAO().getEvent(event._id).getmUpcoming()==1){
+        if (db.eventDAO().getEvent(event._id).upcoming==1){
             btn_pending.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending)
             is_pending = true
         }
 
-        if (db.eventDAO().getEvent(event._id).getmAssisted()==1){
+        if (db.eventDAO().getEvent(event._id).assisted==1){
             btn_assisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted)
             is_assisted = true
         }
@@ -91,9 +90,8 @@ class EventActivity : AppCompatActivity() {
 
 
 
-    fun btn_setup(){
+    fun btn_setup(event: EventItem){
 
-        val event = intent.extras.get("event") as EventItem
         val db : AppDatabase = getDatabase(this)
         btn_favorite.setOnClickListener {
 
@@ -103,7 +101,7 @@ class EventActivity : AppCompatActivity() {
                 is_fav = false
                 toast(resources.getString(R.string.toast_removed_favor))
             } else {
-                event.setmFavorite(1)
+                event.favorite=1
                 db.eventDAO().insertEvent(event)
                 btn_favorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite)
                 is_fav = true
@@ -121,7 +119,7 @@ class EventActivity : AppCompatActivity() {
                 toast(resources.getString(R.string.toast_removed_pending))
             }
             else {
-                event.setmUpcoming(1)
+                event.upcoming=1
                 db.eventDAO().insertEvent(event)
                 btn_pending.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending)
                 is_pending = true
@@ -139,7 +137,7 @@ class EventActivity : AppCompatActivity() {
                 toast(resources.getString(R.string.toast_removed_assisted))
             }
             else {
-                event.setmAssisted(1)
+                event.assisted=1
                 db.eventDAO().insertEvent(event)
                 btn_assisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted)
                 is_assisted = true
@@ -154,7 +152,7 @@ class EventActivity : AppCompatActivity() {
     /**
      * Method that opens main Songkick website
      */
-    fun OpenSongKickLink(view: View){
+    fun openSongKickLink(view: View){
         //TODO: Modificar con enlace de la pagina del evento de Songkick
         val uri = Uri.parse("https://www.songkick.com/")
         val intent = Intent(Intent.ACTION_VIEW, uri)
