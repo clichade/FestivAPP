@@ -1,14 +1,11 @@
 package com.example.trjano.festivapp
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.trjano.festivapp.eventhierarchy.EventItem
+import com.example.trjano.festivapp.database.EventItem
 import kotlinx.android.synthetic.main.event_list_item.view.*
-import org.jetbrains.anko.find
 
 class EventListAdapter(private var mItems : ArrayList<EventItem>) :
         RecyclerView.Adapter<EventListAdapter.MyViewHolder>() {

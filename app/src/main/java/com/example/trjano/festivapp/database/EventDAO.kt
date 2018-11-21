@@ -4,67 +4,63 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
-import com.example.trjano.festivapp.eventhierarchy.FavoriteItem
-import com.example.trjano.festivapp.eventhierarchy.PastItem
-import com.example.trjano.festivapp.eventhierarchy.UpcomingItem
 
 @Dao
 interface EventDAO {
 
-    /**
-     * FAVORITES
-     */
-    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME_FAVORITES)
-    fun getAllFavorites(): List<FavoriteItem>
 
-    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME_FAVORITES+" WHERE "+DBContract.EventItem._ID+" = :id")
-    fun getFavorite(id: Long): FavoriteItem
+    /**********************
+     * getAllEvents methods
+     **********************/
+    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem.FAVORITE+"=1")
+    fun getAllFavorites(): List<EventItem>
 
-    @Insert
-    fun insertFavorite(item: FavoriteItem): Long
 
-    @Delete
-    fun deleteFavorite(item: FavoriteItem)
+    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME+ " WHERE "+DBContract.EventItem.ASSISTED+"=1")
+    fun getAllPastEvents(): List<EventItem>
 
-    @Query("DELETE FROM "+DBContract.EventItem.TABLE_NAME_FAVORITES)
+
+    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem.UPCOMING+"=1")
+    fun getAllUpcomingEvents(): List<EventItem>
+
+
+    /*******************
+     * getEvents methods
+     *******************/
+
+    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem._ID+" = :id" +
+            " AND "+DBContract.EventItem.FAVORITE+"=1")
+    fun getFavorite(id: Long): EventItem
+
+    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem._ID+" = :id " +
+            "AND "+DBContract.EventItem.ASSISTED+"=1")
+    fun getPastEvent(id: Long): EventItem
+
+    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem._ID+" = :id " +
+            "AND "+DBContract.EventItem.UPCOMING+"=1")
+    fun getUpcomingEvent(id: Long): EventItem
+
+    /********************
+     * deleteAll methods
+     ********************/
+
+    @Query("DELETE FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem.ASSISTED+"=1")
+    fun deleteAllPastEvents()
+
+    @Query("DELETE FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem.UPCOMING+"=1")
+    fun deleteAllUpcomingEvents()
+
+    @Query("DELETE FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem.FAVORITE+"=1")
     fun deleteAllFavorites()
 
 
-    /**
-     * PAST EVENTS
-     */
-    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME_PAST)
-    fun getAllPastEvents(): List<PastItem>
-
-    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME_PAST+" WHERE "+DBContract.EventItem._ID+" = :id")
-    fun getPastEvent(id: Long): PastItem
-
+    /*******************
+     * insert and delete
+     *******************/
     @Insert
-    fun insertPastEvent(item: PastItem): Long
+    fun insertEvent(item: EventItem): Long
 
     @Delete
-    fun deletePastEvent(item: PastItem)
+    fun deleteEvent(item: EventItem)
 
-    @Query("DELETE FROM "+DBContract.EventItem.TABLE_NAME_PAST)
-    fun deleteAllPastEvents()
-
-
-    /**
-     * UPCOMING EVENTS
-     */
-
-    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME_UPCOMING)
-    fun getAllUpcomingEvents(): List<UpcomingItem>
-
-    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME_UPCOMING+" WHERE "+DBContract.EventItem._ID+" = :id")
-    fun getUpcomingEvent(id: Long): UpcomingItem
-
-    @Insert
-    fun insertUpcomingEvent(item: UpcomingItem): Long
-
-    @Delete
-    fun deleteUpcomingEvent(item: UpcomingItem)
-
-    @Query("DELETE FROM "+DBContract.EventItem.TABLE_NAME_UPCOMING)
-    fun deleteAllUpcomingEvents()
 }

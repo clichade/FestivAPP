@@ -1,6 +1,6 @@
 package com.example.trjano.festivapp
 
-import com.example.trjano.festivapp.eventhierarchy.EventItem
+import com.example.trjano.festivapp.database.EventItem
 import org.json.JSONArray
 
 import org.json.JSONObject
@@ -10,7 +10,7 @@ class SongKickAPI {
     companion object {
 
         //Nuestra Key de la API de Songkick
-        val KEY: String = "BsmQKU834Qlfu4Ap"
+        private const val KEY: String = "BsmQKU834Qlfu4Ap"
 
 
         /**
@@ -65,7 +65,7 @@ class SongKickAPI {
         /**
          * Dado un objeto de evento JSON de la API Songkick crea una instancia EventItem a partir de ese objeto.
          */
-        private fun genEventFromJson(event_json: JSONObject): EventItem{
+        private fun genEventFromJson(event_json: JSONObject): EventItem {
             val id = event_json.getInt("id")
 
             val name = event_json.getString("displayName").substringBefore(" at ")
@@ -78,7 +78,7 @@ class SongKickAPI {
             var type = "0"//Check if it is a festival or a concert
             if (type_real.equals("Festival")) {type = "1"}
 
-            val event = EventItem(id.toLong(),name,city,start_date,location,artists,type)
+            val event = EventItem(id.toLong(), name, city, start_date, location, artists, type)
             return event
         }
 
