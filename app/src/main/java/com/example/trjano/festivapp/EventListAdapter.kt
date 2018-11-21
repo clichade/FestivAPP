@@ -69,9 +69,9 @@ class EventListAdapter(private var mItems : ArrayList<EventItem>) :
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val event = getItem(position)
-        holder.view.eventlist_item_label_name.text = event.mName
-        holder.view.eventlist_item_label_city.text = event.mCity + ":\n  " + event.mLocation
-        holder.view.evenlist_item_label_date.text = event.mStartDate
+        holder.view.eventlist_item_label_name.text = event.name
+        holder.view.eventlist_item_label_city.text = event.city + ":\n  " + event.location
+        holder.view.evenlist_item_label_date.text = event.startDate
 
         // - get element from your dataset at this position
         // - replace the contents of the view with that element

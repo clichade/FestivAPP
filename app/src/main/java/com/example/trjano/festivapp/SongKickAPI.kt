@@ -50,7 +50,7 @@ class SongKickAPI {
             // var event1 = EventItem(0,"Evento1","Ciudad1","1/1/2018","2/1/2018","Localizacion1","Artista1","0")
             for (i in 0..(events.length() -1)) {
                 var event_item: EventItem = genEventFromJson(events.getJSONObject(i))
-                if (event_item.getMName().contains(event_name,true)) {
+                if (event_item.name.contains(event_name,true)) {
                     event_list.add(event_item)
                 }
 
