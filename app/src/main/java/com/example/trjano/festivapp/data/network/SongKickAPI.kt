@@ -1,6 +1,6 @@
-package com.example.trjano.festivapp
+package com.example.trjano.festivapp.data.network
 
-import com.example.trjano.festivapp.database.EventItem
+import com.example.trjano.festivapp.data.database.EventItem
 import org.json.JSONArray
 
 import org.json.JSONObject

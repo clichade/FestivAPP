@@ -1,10 +1,11 @@
-package com.example.trjano.festivapp
+package com.example.trjano.festivapp.ui.list
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.trjano.festivapp.database.EventItem
+import com.example.trjano.festivapp.R
+import com.example.trjano.festivapp.data.database.EventItem
 import kotlinx.android.synthetic.main.event_list_item.view.*
 
 class EventListAdapter(private var mItems : ArrayList<EventItem>) :
@@ -35,7 +36,7 @@ class EventListAdapter(private var mItems : ArrayList<EventItem>) :
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): EventListAdapter.MyViewHolder {
+                                    viewType: Int): MyViewHolder {
         // create a new view
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.event_list_item, parent, false) as View

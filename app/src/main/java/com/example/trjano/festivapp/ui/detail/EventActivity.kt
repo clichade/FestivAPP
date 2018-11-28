@@ -1,30 +1,33 @@
-package com.example.trjano.festivapp
+package com.example.trjano.festivapp.ui.detail
 
+import android.arch.lifecycle.LifecycleActivity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 
 import kotlinx.android.synthetic.main.activity_event.*
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.support.annotation.IdRes
 import android.view.View
 import android.widget.ImageButton
-import android.widget.TextView
-import com.example.trjano.festivapp.database.AppDatabase
-import com.example.trjano.festivapp.database.AppDatabase.getDatabase
-import com.example.trjano.festivapp.database.EventItem
+import com.example.trjano.festivapp.R
+import com.example.trjano.festivapp.data.database.AppDatabase
+import com.example.trjano.festivapp.data.database.AppDatabase.getDatabase
+import com.example.trjano.festivapp.data.database.EventItem
+import com.example.trjano.festivapp.databinding.ActivityEventBinding
 import org.jetbrains.anko.backgroundDrawable
 import org.jetbrains.anko.toast
+import android.arch.lifecycle.ViewModelProviders
 
 
-class EventActivity : AppCompatActivity() {
 
-    private val tv_name : TextView by bind(R.id.event_name)
-    private val tv_artists : TextView by bind(R.id.event_artists)
-    private val tv_location_city : TextView by bind(R.id.event_location_city)
-    private val tv_location_exact : TextView by bind(R.id.event_location_exact)
-    private val tv_date_from : TextView by bind(R.id.event_date_from)
-    private val tv_start_time : TextView by bind(R.id.event_date_start_time)
+
+class EventActivity : LifecycleActivity() {
+
+
+    lateinit var binding: ActivityEventBinding
+    lateinit var mViewModel : EventActivityViewModel
 
     private val btn_favorite : ImageButton by bind(R.id.event_btn_favorites)
     private val btn_pending : ImageButton by bind(R.id.event_btn_pending)
@@ -34,37 +37,32 @@ class EventActivity : AppCompatActivity() {
     private var is_pending = false
     private var is_assisted = false
 
-
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_event)
-        setSupportActionBar(toolbar)
+        val event = intent.extras.get("event") as EventItem
 
-        components_setup()
+        mViewModel = ViewModelProviders.of(this).get(EventActivityViewModel::class.java!!)
+
+        //TODO:?
+//        mViewModel.eventItem.observe(this,  ->{
+//
+//        });
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_event)
+        binding.apply {
+            eventName.text = event.name
+            eventArtists.text = event.artists
+            eventLocationCity.text = event.city
+            eventLocationExact.text = event.location
+            eventDateFrom.text = event.startDate
+        }
+        check_status(event)
+        btn_setup(event)
     }
 
-
-    fun components_setup(){
-
-        val eventItem = intent.extras.get("event") as EventItem
-        tv_name.text = eventItem.name
-        tv_artists.text = eventItem.artists
-        tv_location_city.text = eventItem.city
-        tv_location_exact.text = eventItem.location
-        tv_date_from.text = eventItem.startDate
-
-        check_status(eventItem)
-        btn_setup(eventItem)
-
-
-    }
 
     /**
      * Comprueba si pertenece a una tabla o no, debe ir antes de btn_setup()
-     *
      */
     fun check_status(event: EventItem){
         val db : AppDatabase = getDatabase(this)
@@ -87,7 +85,6 @@ class EventActivity : AppCompatActivity() {
         }
 
     }
-
 
 
     fun btn_setup(event: EventItem){
@@ -146,8 +143,6 @@ class EventActivity : AppCompatActivity() {
             }
 
         }
-
-
     }
     /**
      * Method that opens main Songkick website
@@ -159,7 +154,7 @@ class EventActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun <T : View> AppCompatActivity.bind(@IdRes res : Int) : Lazy<T> {
+    private fun <T : View> LifecycleActivity.bind(@IdRes res : Int) : Lazy<T> {
         return lazy { findViewById<T>(res) }
     }
 }

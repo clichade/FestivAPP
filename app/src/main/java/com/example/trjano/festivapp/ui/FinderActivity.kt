@@ -1,43 +1,31 @@
-package com.example.trjano.festivapp
+package com.example.trjano.festivapp.ui
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.IdRes
 import android.util.Log
 import android.view.View
 import android.widget.*
-import java.net.URL
+import com.example.trjano.festivapp.ui.list.EventListActivity
+import com.example.trjano.festivapp.R
+import com.example.trjano.festivapp.databinding.FinderActivityBinding
+import com.example.trjano.festivapp.utilities.transform_date
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.concurrent.thread
 
 class FinderActivity : AppCompatActivity() {
 
+    lateinit var binding : FinderActivityBinding
     val KEY: String = "BsmQKU834Qlfu4Ap"
-
-    private val btn_search : Button by bind(R.id.finder_btn_search)//Delegate
-    private val et_name : EditText by bind(R.id.finder_et_name);
-    private val et_location : AutoCompleteTextView by bind(R.id.finder_et_location)
-    private val et_date_from : EditText by bind(R.id.finder_et_date_from)
-    private val et_date_to : EditText by bind(R.id.finder_et_date_to)
-    private val cb_festival: CheckBox by bind(R.id.finder_checkbox_festival)
-    private val cb_concert: CheckBox by bind(R.id.finder_checkbox_concert)
-    private val tv_error: TextView by bind(R.id.finder_label_error)
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.finder_activity)
+        binding = DataBindingUtil.setContentView(this,R.layout.finder_activity)
         components_setup()
 
-
-
-        /* thread () {
-             SongKickAPI.find("Cordoba")
-          }*/
     }
 
     fun components_setup() {
@@ -55,24 +43,24 @@ class FinderActivity : AppCompatActivity() {
     fun location_setup() {
         val locations_array : Array<String> = resources.getStringArray(R.array.locations)
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,locations_array)
-        et_location.setAdapter(adapter)
-        et_location.threshold = 2
+        binding.finderEtLocation.setAdapter(adapter)
+        binding.finderEtLocation.threshold = 2
     }
 
 
     fun btn_setup(){
-        btn_search.setOnClickListener {
+        binding.finderBtnSearch.setOnClickListener {
             if (!check_input_errors()){
 
 
 
                 val intent = Intent(this, EventListActivity::class.java)
 
-                if (et_name.text.toString().isNotEmpty())
-                    intent.putExtra("name", et_name.text.toString())
+                if (binding.finderEtName.text.toString().isNotEmpty())
+                    intent.putExtra("name", binding.finderEtName.text.toString())
 
                 //location
-                intent.putExtra("location",et_location.text.toString())
+                intent.putExtra("location",binding.finderEtLocation.text.toString())
                 startActivity(intent)
             }
 
@@ -83,27 +71,27 @@ class FinderActivity : AppCompatActivity() {
         var isError= false
 
         //if locations is empty
-        if (et_location.text.toString().isEmpty()){
-            tv_error.text = resources.getString(R.string.finder_error_no_location)
+        if (binding.finderEtLocation.text.toString().isEmpty()){
+            binding.finderLabelError.text = resources.getString(R.string.finder_error_no_location)
             return true
         }
 
         //if locations does not belong to the list of locations
-        if (!resources.getStringArray(R.array.locations).contains(et_location.text.toString())){
-            tv_error.text = resources.getString(R.string.finder_error_location_invalid)
+        if (!resources.getStringArray(R.array.locations).contains(binding.finderEtLocation.text.toString())){
+            binding.finderLabelError.text = resources.getString(R.string.finder_error_location_invalid)
             return true
         }
 
         //if date starts exists but date end doesn't the search can not be done
-        if (!et_date_from.text.toString().isEmpty() && et_date_to.text.toString().isEmpty()){
-            tv_error.text = resources.getString(R.string.finder_error_no_end_date_selected)
+        if (!binding.finderEtDateFrom.text.toString().isEmpty() && binding.finderEtDateTo.text.toString().isEmpty()){
+            binding.finderLabelError.text = resources.getString(R.string.finder_error_no_end_date_selected)
             return true
         }
 
 
-        if (!et_date_from.text.toString().isEmpty() && !et_date_to.text.toString().isEmpty()) {
-            val date1_start = SimpleDateFormat("dd/MM/yyyy").parse(et_date_from.text.toString())
-            val date1_end = SimpleDateFormat("dd/MM/yyyy").parse(et_date_to.text.toString())
+        if (!binding.finderEtDateFrom.text.toString().isEmpty() && !binding.finderEtDateTo.text.toString().isEmpty()) {
+            val date1_start = SimpleDateFormat("dd/MM/yyyy").parse(binding.finderEtDateFrom.text.toString())
+            val date1_end = SimpleDateFormat("dd/MM/yyyy").parse(binding.finderEtDateTo.text.toString())
 
 
             Log.d("fecha", "Inicio: " + date1_start.toString())
@@ -111,18 +99,15 @@ class FinderActivity : AppCompatActivity() {
 
             //if date end is sooner than date start the search can not be done
             if (date1_start > date1_end) {
-                tv_error.text = resources.getString(R.string.finder_error_dates_invalid)
+                binding.finderLabelError.text = resources.getString(R.string.finder_error_dates_invalid)
                 return true
             }
         }
 
-        if(!cb_concert.isChecked && !cb_festival.isChecked){
-            tv_error.text = resources.getString(R.string.finder_error_no_type_selected)
+        if(!binding.finderCheckboxConcert.isChecked && !binding.finderCheckboxFestival.isChecked){
+            binding.finderLabelError.text = resources.getString(R.string.finder_error_no_type_selected)
             return true
         }
-
-
-
 
         return isError
     }
@@ -134,9 +119,9 @@ class FinderActivity : AppCompatActivity() {
         val month: Int = cal.get(Calendar.MONTH)
         val day: Int = cal.get(Calendar.DAY_OF_MONTH)
 
-        et_date_from.setOnClickListener() {
+        binding.finderEtDateFrom.setOnClickListener() {
             val from_listener = DatePickerDialog.OnDateSetListener({_,year_start, month_start, day_start ->
-                et_date_from.setText(transform_date(year_start,month_start,day_start))})
+                binding.finderEtDateFrom.setText(transform_date(year_start, month_start, day_start))})
             val dpd = DatePickerDialog( this,from_listener,year,month,day)
             dpd.show()
 
@@ -150,20 +135,12 @@ class FinderActivity : AppCompatActivity() {
         val month: Int = cal.get(Calendar.MONTH)
         val day: Int = cal.get(Calendar.DAY_OF_MONTH)
 
-        et_date_to.setOnClickListener() {
+        binding.finderEtDateTo.setOnClickListener() {
             val from_listener = DatePickerDialog.OnDateSetListener({_,year_start, month_start, day_start ->
-                et_date_to.setText(transform_date(year_start,month_start,day_start))})
+                binding.finderEtDateTo.setText(transform_date(year_start, month_start, day_start))})
             val dpd = DatePickerDialog( this,from_listener,year,month,day)
             dpd.show()
 
         }
-    }
-
-
-
-
-    fun <T : View> AppCompatActivity.bind(@IdRes res : Int) : Lazy<T> {
-        @Suppress("UNCHECKED_CAST")
-        return lazy { findViewById(res) as T }
     }
 }

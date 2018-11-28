@@ -1,4 +1,4 @@
-package com.example.trjano.festivapp
+package com.example.trjano.festivapp.ui
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.support.annotation.IdRes
 import android.view.View
 import android.widget.Button
+import com.example.trjano.festivapp.ui.list.EventListActivity
+import com.example.trjano.festivapp.R
 
 class MainActivity : AppCompatActivity() {
 
