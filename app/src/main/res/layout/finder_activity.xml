@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".FinderActivity"
+    xmlns:tools="http://schemas.android.com/tools">
+<android.support.constraint.ConstraintLayout
+    tools:context=".ui.FinderActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="12dp"
@@ -194,9 +194,5 @@
         android:textColor="@android:color/holo_red_light"
         android:text=""/>
 
-
-
-
-
-
 </android.support.constraint.ConstraintLayout>
+</layout>

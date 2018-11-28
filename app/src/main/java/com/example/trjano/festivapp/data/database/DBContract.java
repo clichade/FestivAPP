@@ -1,4 +1,4 @@
-package com.example.trjano.festivapp.database;
+package com.example.trjano.festivapp.data.database;
 
 import android.provider.BaseColumns;
 

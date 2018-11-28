@@ -1,6 +1,7 @@
-package com.example.trjano.festivapp
+package com.example.trjano.festivapp.ui.list
 
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.annotation.IdRes
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +9,12 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
-import com.example.trjano.festivapp.database.AppDatabase
-import com.example.trjano.festivapp.database.EventItem
+import com.example.trjano.festivapp.ui.detail.EventActivity
+import com.example.trjano.festivapp.R
+import com.example.trjano.festivapp.data.network.SongKickAPI
+import com.example.trjano.festivapp.data.database.AppDatabase
+import com.example.trjano.festivapp.data.database.EventItem
+import com.example.trjano.festivapp.databinding.ActivityEventListBinding
 
 import org.jetbrains.anko.async
 import org.jetbrains.anko.uiThread
@@ -17,31 +22,23 @@ import java.io.Serializable
 
 class EventListActivity : AppCompatActivity() {
 
-    private val event_list : RecyclerView by bind(R.id.eventlist_list)
+    lateinit var binding: ActivityEventListBinding
     private lateinit var viewAdapter: EventListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_event_list)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_event_list)
 
-        components_setup()
-
-        if (intent.extras.getString("Type").isNullOrBlank()) load_search()
-        else load_table()
-
-    }
-
-    fun <T : View> AppCompatActivity.bind(@IdRes res : Int) : Lazy<T> {
-        return lazy { findViewById<T>(res) }
-    }
-
-
-    fun components_setup(){
         event_list_setup()
-    }
 
+        if (intent.extras.getString("Type").isNullOrBlank())
+            load_search()
+        else
+            load_table()
+
+    }
 
     fun load_table(){
         val db : AppDatabase = AppDatabase.getDatabase(this)
@@ -74,7 +71,7 @@ class EventListActivity : AppCompatActivity() {
             var new_list: ArrayList<EventItem>
 
             when {
-            !name.isNullOrBlank() -> new_list = SongKickAPI.find(location,name)
+            !name.isNullOrBlank() -> new_list = SongKickAPI.find(location, name)
             else  -> new_list = SongKickAPI.find(location)
             }
 
@@ -101,7 +98,7 @@ class EventListActivity : AppCompatActivity() {
         }
 
 
-        event_list.apply {
+        binding.eventlistList.apply {
             // use this setting to improve performance if you know that changes
             // in content do not change the layout size of the RecyclerView
             setHasFixedSize(true)

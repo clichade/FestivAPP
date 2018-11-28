@@ -1,4 +1,4 @@
-package com.example.trjano.festivapp.database
+package com.example.trjano.festivapp.data.database
 
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Delete
@@ -12,15 +12,15 @@ interface EventDAO {
     /**********************
      * getAllEvents methods
      **********************/
-    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem.FAVORITE+"=1")
+    @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem.FAVORITE +"=1")
     fun getAllFavorites(): List<EventItem>
 
 
-    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME+ " WHERE "+DBContract.EventItem.ASSISTED+"=1")
+    @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME + " WHERE "+ DBContract.EventItem.ASSISTED +"=1")
     fun getAllPastEvents(): List<EventItem>
 
 
-    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem.UPCOMING+"=1")
+    @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem.UPCOMING +"=1")
     fun getAllUpcomingEvents(): List<EventItem>
 
 
@@ -29,13 +29,13 @@ interface EventDAO {
      * deleteAll methods
      ********************/
 
-    @Query("DELETE FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem.ASSISTED+"=1")
+    @Query("DELETE FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem.ASSISTED +"=1")
     fun deleteAllPastEvents()
 
-    @Query("DELETE FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem.UPCOMING+"=1")
+    @Query("DELETE FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem.UPCOMING +"=1")
     fun deleteAllUpcomingEvents()
 
-    @Query("DELETE FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem.FAVORITE+"=1")
+    @Query("DELETE FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem.FAVORITE +"=1")
     fun deleteAllFavorites()
 
 
@@ -48,7 +48,7 @@ interface EventDAO {
     @Delete
     fun deleteEvent(item: EventItem)
 
-    @Query("SELECT * FROM "+DBContract.EventItem.TABLE_NAME+" WHERE "+DBContract.EventItem._ID+" = :id")
+    @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem._ID+" = :id")
     fun getEvent(id: Long): EventItem
 
 }
