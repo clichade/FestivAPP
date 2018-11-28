@@ -1,10 +1,8 @@
 package com.example.trjano.festivapp.ui.detail
 
-import android.arch.lifecycle.LifecycleActivity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 
-import kotlinx.android.synthetic.main.activity_event.*
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.net.Uri
@@ -23,7 +21,7 @@ import android.arch.lifecycle.ViewModelProviders
 
 
 
-class EventActivity : LifecycleActivity() {
+class EventActivity : AppCompatActivity() {
 
 
     lateinit var binding: ActivityEventBinding
@@ -154,7 +152,7 @@ class EventActivity : LifecycleActivity() {
         startActivity(intent)
     }
 
-    private fun <T : View> LifecycleActivity.bind(@IdRes res : Int) : Lazy<T> {
+    private fun <T : View> AppCompatActivity.bind(@IdRes res : Int) : Lazy<T> {
         return lazy { findViewById<T>(res) }
     }
 }

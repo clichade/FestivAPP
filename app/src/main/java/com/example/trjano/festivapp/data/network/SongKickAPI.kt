@@ -6,8 +6,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URL
 
-class SongKickAPI {
-    companion object {
+object SongKickAPI {
 
         //Nuestra Key de la API de Songkick
         private const val KEY: String = "BsmQKU834Qlfu4Ap"
@@ -121,4 +120,3 @@ class SongKickAPI {
             return id.toString()
         }
     }
-}

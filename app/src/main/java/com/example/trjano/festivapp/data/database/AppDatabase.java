@@ -19,5 +19,10 @@ import android.content.Context;
            instance = Room.databaseBuilder(context.getApplicationContext(),AppDatabase.class,DBContract.EventItem.DATABASE_NAME).build();
     return instance;
    }
+
+    /**
+     * Event DAO
+     * @return EventDAO
+     */
    public abstract EventDAO eventDAO();
 }
