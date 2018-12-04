@@ -11,10 +11,13 @@ import android.view.View
 import android.widget.*
 import com.example.trjano.festivapp.ui.list.EventListActivity
 import com.example.trjano.festivapp.R
+import com.example.trjano.festivapp.data.EventRepository
 import com.example.trjano.festivapp.databinding.FinderActivityBinding
 import com.example.trjano.festivapp.utilities.transform_date
+import org.jetbrains.anko.async
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.concurrent.thread
 
 class FinderActivity : AppCompatActivity() {
 
@@ -108,6 +111,7 @@ class FinderActivity : AppCompatActivity() {
             binding.finderLabelError.text = resources.getString(R.string.finder_error_no_type_selected)
             return true
         }
+
 
         return isError
     }

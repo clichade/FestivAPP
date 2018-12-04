@@ -1,12 +1,7 @@
 package com.example.trjano.festivapp.utilities;
 
 import android.content.Context;
-import android.util.EventLog;
 
-import com.example.trjano.festivapp.AppExecutors;
-import com.example.trjano.festivapp.data.EventRepository;
-import com.example.trjano.festivapp.data.database.AppDatabase;
-import com.example.trjano.festivapp.data.network.SongKickAPI;
 import com.example.trjano.festivapp.ui.detail.EventActivityViewModel;
 
 /**
@@ -21,10 +16,7 @@ public class InjectorUtils {
      * @return
      */
     private static EventRepository provideRepository(Context context){
-        AppDatabase db = AppDatabase.getDatabase(context.getApplicationContext());
-        AppExecutors executors = AppExecutors.getInstance();
-        SongKickAPI api = SongKickAPI.INSTANCE;
-        return EventRepository.getInstance(db.eventDAO(),api,executors);
+        return EventRepository.getInstance(context);
     }
 
     /**
