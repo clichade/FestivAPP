@@ -16,6 +16,7 @@ import com.example.trjano.festivapp.data.database.AppDatabase
 import com.example.trjano.festivapp.data.database.EventItem
 import com.example.trjano.festivapp.databinding.ActivityEventListBinding
 
+
 import org.jetbrains.anko.async
 import org.jetbrains.anko.uiThread
 import java.io.Serializable
@@ -32,6 +33,7 @@ class EventListActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_event_list)
 
         event_list_setup()
+
 
         if (intent.extras.getString("Type").isNullOrBlank())
             load_search()

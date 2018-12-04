@@ -39,7 +39,7 @@ class EventActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val event = intent.extras.get("event") as EventItem
 
-        mViewModel = ViewModelProviders.of(this).get(EventActivityViewModel::class.java!!)
+        mViewModel = ViewModelProviders.of(this).get(EventActivityViewModel::class.java)
 
         //TODO:?
 //        mViewModel.eventItem.observe(this,  ->{
