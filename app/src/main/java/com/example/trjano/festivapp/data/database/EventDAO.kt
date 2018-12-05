@@ -1,5 +1,6 @@
 package com.example.trjano.festivapp.data.database
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
@@ -13,17 +14,21 @@ interface EventDAO {
      * getAllEvents methods
      **********************/
     @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem.FAVORITE +"=1")
-    fun getAllFavorites(): List<EventItem>
+    fun getAllFavorites(): LiveData<List<EventItem>>
 
 
     @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME + " WHERE "+ DBContract.EventItem.ASSISTED +"=1")
-    fun getAllPastEvents(): List<EventItem>
+    fun getAllPastEvents(): LiveData<List<EventItem>>
 
 
     @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem.UPCOMING +"=1")
-    fun getAllUpcomingEvents(): List<EventItem>
+    fun getAllUpcomingEvents(): LiveData<List<EventItem>>
 
 
+    /**
+     * Todo Añadir la funcionalidad Update
+       EventDao: Añadir un método @Update del evento, que será llamado desde Repository para realizar lo anteriormente mencionado
+     */
 
     /********************
      * deleteAll methods
@@ -43,12 +48,12 @@ interface EventDAO {
      * Get, insert and delete
      ************************/
     @Insert
-    fun insertEvent(item: EventItem): Long
+    fun insertEvent(item: LiveData<EventItem>): Long
 
     @Delete
-    fun deleteEvent(item: EventItem)
+    fun deleteEvent(item: LiveData<EventItem>)
 
     @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem._ID+" = :id")
-    fun getEvent(id: Long): EventItem
+    fun getEvent(id: Long): LiveData<EventItem>
 
 }

@@ -45,16 +45,17 @@ class EventListActivity : AppCompatActivity() {
     fun load_table(){
         val db : AppDatabase = AppDatabase.getDatabase(this)
 
-        var new_list: List<EventItem>
-        Log.d("cargatabla","Ha entrado")
+        var new_list: List<EventItem> = ArrayList()
 
+        //Todo: Sustituir usando viewmodel
+        /*
         when (intent.extras.getString("Type")){
             "FAVORITES_EVENTS" -> new_list = db.eventDAO().getAllFavorites()
             "UPCOMING_EVENTS" -> new_list = db.eventDAO().getAllUpcomingEvents()
             "PAST_EVENTS" -> new_list = db.eventDAO().getAllPastEvents()
             else -> new_list = ArrayList()
         }
-
+        */
 
         async {
             uiThread { viewAdapter.update(ArrayList(new_list)) }
@@ -69,7 +70,8 @@ class EventListActivity : AppCompatActivity() {
         val location = intent.extras.getString("location")
         val name = intent.extras.getString("name")
 
-        async {
+        //Todo: Sustituir usando viewmodel
+      /*  async {
             var new_list: ArrayList<EventItem>
 
             when {
@@ -79,7 +81,7 @@ class EventListActivity : AppCompatActivity() {
 
 
             uiThread { viewAdapter.update(new_list) }
-        }
+        }*/
 
     }
 
