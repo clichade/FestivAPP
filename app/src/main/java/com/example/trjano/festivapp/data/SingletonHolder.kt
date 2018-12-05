@@ -1,5 +1,8 @@
 package com.example.trjano.festivapp.data
 
+/**
+ * This class templates a Singleton for any class
+ */
 open class SingletonHolder<out T, in A>(creator: (A) -> T) {
     private var creator: ((A) -> T)? = creator
     @Volatile private var instance: T? = null
