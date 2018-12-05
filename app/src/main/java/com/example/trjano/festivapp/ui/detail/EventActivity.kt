@@ -11,53 +11,50 @@ import android.support.annotation.IdRes
 import android.view.View
 import android.widget.ImageButton
 import com.example.trjano.festivapp.R
-import com.example.trjano.festivapp.data.database.AppDatabase
-import com.example.trjano.festivapp.data.database.AppDatabase.getDatabase
 import com.example.trjano.festivapp.data.database.EventItem
 import com.example.trjano.festivapp.databinding.ActivityEventBinding
 import org.jetbrains.anko.backgroundDrawable
 import org.jetbrains.anko.toast
 import android.arch.lifecycle.ViewModelProviders
-import com.example.trjano.festivapp.data.EventRepository
 import org.jetbrains.anko.async
 import org.jetbrains.anko.uiThread
-import kotlin.concurrent.thread
 
-
+/**
+ * Activity with details of an event (concert or festival)
+ */
 class EventActivity : AppCompatActivity() {
 
+    /**For binding View elements to layout*/
+    private lateinit var binding: ActivityEventBinding
 
-    lateinit var binding: ActivityEventBinding
-    lateinit var mViewModel: EventActivityViewModel
+    /**Contains the data logic operations*/
+    private lateinit var mViewModel: EventActivityViewModel
 
-    private val btn_favorite: ImageButton by bind(R.id.event_btn_favorites)
-    private val btn_pending: ImageButton by bind(R.id.event_btn_pending)
-    private val btn_assisted: ImageButton by bind(R.id.event_btn_assisted)
-
-    private var is_fav = false
-    private var is_pending = false
-    private var is_assisted = false
+    /**Bind manually AppBar icons (because ActivityEventBinding don't support them )*/
+    private val btnFavorite: ImageButton by bind(R.id.event_btn_favorites)
+    private val btnUpcoming: ImageButton by bind(R.id.event_btn_pending)
+    private val btnAssisted: ImageButton by bind(R.id.event_btn_assisted)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //Get the event from the previous Activity
         val event = intent.extras.get("event") as EventItem
 
+        //Get the ViewModel from the Activity
         mViewModel = ViewModelProviders.of(this).get(EventActivityViewModel::class.java)
+
+        //Sets the data to the ViewModel
         mViewModel.setValue(event)
 
+        //Observing to changing Fav, Pend, Assisted buttons
         mViewModel.eventItem.observe(this, Observer { event_item ->
             async {
-                uiThread {
-                check_status(event_item!!)
-                                    }
-
+                uiThread { check_status() }
             }
-
-
-
-
         })
 
+        //Bind all the View elements to the layout
         binding = DataBindingUtil.setContentView(this, R.layout.activity_event)
         binding.apply {
             eventName.text = event.name
@@ -66,93 +63,72 @@ class EventActivity : AppCompatActivity() {
             eventLocationExact.text = event.location
             eventDateFrom.text = event.startDate
         }
-       // check_status(event)
-        btn_setup(event)
+        btn_setup()
     }
 
 
     /**
-     * Comprueba si pertenece a una tabla o no, debe ir antes de btn_setup()
+     * Loads first-time UI buttons of favorite,upcoming and assisted
+     * if should be turned on or not
      */
-    fun check_status(event: EventItem) {
-
-        if (event.favorite == 1) {
-            btn_favorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite)
-            is_fav = true
-        }
-
-        if (event.upcoming == 1) {
-            btn_pending.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending)
-            is_pending = true
-        }
-
-        if (event.assisted == 1) {
-            btn_assisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted)
-            is_assisted = true
-        }
-
+    private fun check_status() {
+        if (mViewModel.isFavorite()) btnFavorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite)
+        if (mViewModel.isUpcoming()) btnUpcoming.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending)
+        if (mViewModel.isAssisted()) btnAssisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted)
     }
 
+    /**
+     * Load UI buttons for favorite,upcoming and assisted when data changes.
+     * Then calls to ViewModel and shows a Toast
+     */
+    private fun btn_setup() {
 
-    fun btn_setup(event: EventItem) {
-
-        btn_favorite.setOnClickListener {
-               if (is_fav) {
-                   event.favorite = 1
-                   //db.eventDAO().deleteEvent(event)
-                   btn_favorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite_no)
-                   is_fav = false
+        //If clicked, loads icon (turned on/off) asking ViewModel
+        btnFavorite.setOnClickListener {
+            if (mViewModel.isFavorite()) {
+                btnFavorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite_no)
                    toast(resources.getString(R.string.toast_removed_favor))
                } else {
-                   event.favorite=1
-                  // db.eventDAO().insertEvent(event)
-                   btn_favorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite)
-                   is_fav = true
+                btnFavorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite)
                    toast(resources.getString(R.string.toast_add_favorites))
-
                }
+
+            //Make the data change
+            mViewModel.updateFavorite()
            }
 
-
-           btn_pending.setOnClickListener {
-               if(is_pending){
-                   //db.eventDAO().deleteEvent(event)
-                   btn_pending.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending_no)
-                   is_pending = false
+        //If clicked, loads icon (turned on/off) asking ViewModel
+        btnUpcoming.setOnClickListener {
+            if (mViewModel.isUpcoming()) {
+                btnUpcoming.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending_no)
                    toast(resources.getString(R.string.toast_removed_pending))
                }
                else {
-                   event.upcoming=1
-                  // db.eventDAO().insertEvent(event)
-                   btn_pending.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending)
-                   is_pending = true
+                btnUpcoming.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending)
                    toast(resources.getString(R.string.toast_add_pending))
-
                }
-
+            //Make the data change
+            mViewModel.updateUpcoming()
            }
 
-           btn_assisted.setOnClickListener {
-               if(is_assisted){
-                   //db.eventDAO().deleteEvent(event)
-                   btn_assisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted_no)
-                   is_assisted = false
+        //If clicked, loads icon (turned on/off) asking ViewModel
+        btnAssisted.setOnClickListener {
+            if (mViewModel.isAssisted()) {
+                btnAssisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted_no)
                    toast(resources.getString(R.string.toast_removed_assisted))
                }
                else {
-                   event.assisted=1
-                 //  db.eventDAO().insertEvent(event)
-                   btn_assisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted)
-                   is_assisted = true
+                btnAssisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted)
                    toast(resources.getString(R.string.toast_add_assisted))
-
                }
-
+            //Make the data change
+            mViewModel.updateAssisted()
         }
     }
 
     /**
      * Method that opens main Songkick website
+     * @param view
      */
     fun openSongKickLink(view: View) {
         //TODO: Modificar con enlace de la pagina del evento de Songkick
@@ -161,6 +137,10 @@ class EventActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Bind icons from Appbar (fav, upcoming and assisted)
+     * @param res
+     */
     private fun <T : View> AppCompatActivity.bind(@IdRes res: Int): Lazy<T> {
         return lazy { findViewById<T>(res) }
     }

@@ -21,14 +21,13 @@ import kotlin.concurrent.thread
 
 class FinderActivity : AppCompatActivity() {
 
+    /**For binding View elements to layout*/
     lateinit var binding : FinderActivityBinding
-    val KEY: String = "BsmQKU834Qlfu4Ap"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.finder_activity)
         components_setup()
-
     }
 
     fun components_setup() {
@@ -39,9 +38,9 @@ class FinderActivity : AppCompatActivity() {
         btn_setup()
     }
 
-    /*
-    Sets the autocomplete textview with the list of Locations lodades from the strings xml
-    also sets the minimum number of characters needed for start the autocompletion
+    /**
+     * Sets the autocomplete textview with the list of Locations lodades from the strings xml
+     * also sets the minimum number of characters needed for start the autocompletion
      */
     fun location_setup() {
         val locations_array : Array<String> = resources.getStringArray(R.array.locations)
@@ -111,8 +110,6 @@ class FinderActivity : AppCompatActivity() {
             binding.finderLabelError.text = resources.getString(R.string.finder_error_no_type_selected)
             return true
         }
-
-
         return isError
     }
 
@@ -140,11 +137,11 @@ class FinderActivity : AppCompatActivity() {
         val day: Int = cal.get(Calendar.DAY_OF_MONTH)
 
         binding.finderEtDateTo.setOnClickListener() {
-            val from_listener = DatePickerDialog.OnDateSetListener({_,year_start, month_start, day_start ->
-                binding.finderEtDateTo.setText(transform_date(year_start, month_start, day_start))})
+            val from_listener = DatePickerDialog.OnDateSetListener { _, year_start, month_start, day_start ->
+                binding.finderEtDateTo.setText(transform_date(year_start, month_start, day_start))
+            }
             val dpd = DatePickerDialog( this,from_listener,year,month,day)
             dpd.show()
-
         }
     }
 }

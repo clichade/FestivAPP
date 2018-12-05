@@ -3,28 +3,28 @@ package com.example.trjano.festivapp.data
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
-import android.util.EventLog
 import com.example.trjano.festivapp.data.database.AppDatabase
 import com.example.trjano.festivapp.data.database.EventDAO
 import com.example.trjano.festivapp.data.database.EventItem
 import com.example.trjano.festivapp.data.network.SongKickAPI
 import java.util.ArrayList
-import kotlin.concurrent.thread
 
+/**
+ * Architecture Component: Repository
+ * The repository contains ALL the operations provided from the SongKick api and
+ * the database (from DAO)
+ * ViewModel only mission is to call necessary methods; Repository manages logic
+ * @see https://developer.android.com/jetpack/docs/guide
+ */
 class EventRepository private constructor(context: Context){
 
-    /** Todo Aañdir la lógica del funcionamiento de la base de datos
-     * Respository:
-    Debe encargarse de la lógica interna de añadir, borrar y actualizar
-    Ej: AñadirFavoritos: Si existe como Pendiente o Asistido, la tupla del evento se actualizará, si no existe se crea la tupla.
-    EliminarFavoritos: Si existe como Pendiente o Asistido. la tupla del evento se actualizará Favorite= 0, si todos están a 0 se eliminará la tupla
-    Hacer lo mismo para Pendiente y Asistidos
+    /**DAO instance, accessed by Singleton*/
+    private val eventDAO: EventDAO = AppDatabase.getDatabase(context.applicationContext).eventDAO()
 
-     */
+    /**Songkick API (Networking) instance*/
+    private val songKickAPI: SongKickAPI = SongKickAPI
 
-    val eventDAO: EventDAO = AppDatabase.getDatabase(context.getApplicationContext()).eventDAO()
-    val songKickAPI: SongKickAPI = SongKickAPI
-
+    /**Repository is a Singleton too*/
     companion object : SingletonHolder<EventRepository, Context>(::EventRepository)
 
     /**
@@ -32,8 +32,6 @@ class EventRepository private constructor(context: Context){
      * @return list events
      */
     fun getAllFavorites(): LiveData<List<EventItem>> = eventDAO.getAllFavorites()
-
-
 
     /**
      * Gets all past events from database source
@@ -64,30 +62,101 @@ class EventRepository private constructor(context: Context){
     fun deleteAllFavorites() =  eventDAO.deleteAllFavorites()
 
     /**
-     * Inserts an event into database
-     * @param event
-     * @return long ID from event
-     */
-    fun insertEvent(event: LiveData<EventItem>): Long? = eventDAO.insertEvent(event)
-
-    /**
-     * Deletes an event from database
+     * Inserts an favorite event into database if doesn't exists.
+     * If exists, it changes to 0.
+     * If the event is not marked in any category, the event is deleted
      * @param event
      */
-    fun deleteEvent(event: LiveData<EventItem>) = eventDAO.deleteEvent(event)
+    fun updateFavorite(event: LiveData<EventItem>) {
+
+        //If the event is not favorite, now it is
+        if (event.value!!.favorite == 0) {
+            event.value!!.favorite = 1
+
+            //If doesn't exists in database, we insert. If exists, we update
+            if (eventDAO.getEvent(event.value!!._id).value == null)
+                eventDAO.insertEvent(event)
+            else
+                eventDAO.updateEvent(event)
+
+            //If the event is favorited, now it's not
+        } else {
+            event.value!!.favorite = 0
+            eventDAO.updateEvent(event)
+
+            //Check that event can be erasable from database
+            checkErasable(event)
+        }
+    }
 
     /**
-     * Gets an event from database source
-     * @param id from event
-     * @return EventItem
+     * Inserts an upcoming event into database if doesn't exists.
+     * If exists, it changes to 0.
+     * If the event is not marked in any category, the event is deleted
+     * @param event
      */
-    fun getEvent(id: Long?): LiveData<EventItem> = eventDAO.getEvent(id!!)
+    fun updateUpcoming(event: LiveData<EventItem>) {
 
+        //If the event is not upcoming, now it is
+        if (event.value!!.upcoming == 0) {
+            event.value!!.upcoming = 1
+
+            //If doesn't exists in database, we insert. If exists, we update
+            if (eventDAO.getEvent(event.value!!._id).value == null)
+                eventDAO.insertEvent(event)
+            else
+                eventDAO.updateEvent(event)
+
+            //If the event is upcoming, now it's not
+        } else {
+            event.value!!.upcoming = 0
+            eventDAO.updateEvent(event)
+            //Check that event can be erasable from database
+            checkErasable(event)
+        }
+    }
+
+    /**
+     * Inserts an assisted event into database if doesn't exists.
+     * If exists, it changes to 0.
+     * If the event is not marked in any category, the event is deleted
+     * @param event
+     */
+    fun updateAssisted(event: LiveData<EventItem>) {
+
+        //If the event is not assisted, now it is
+        if (event.value!!.assisted == 0) {
+            event.value!!.assisted = 1
+
+            //If doesn't exists in database, we insert. If exists, we update
+            if (eventDAO.getEvent(event.value!!._id).value == null)
+                eventDAO.insertEvent(event)
+            else
+                eventDAO.updateEvent(event)
+            //If the event is assisted, now it's not
+        } else {
+            event.value!!.assisted = 0
+            eventDAO.updateEvent(event)
+
+            //Check that event can be erasable from database
+            checkErasable(event)
+        }
+    }
+
+    /**
+     * Checks if event can be erased from database
+     * (Favorite, Assisted and Upcoming are equal to 0
+     * @param event
+     */
+    private fun checkErasable(event: LiveData<EventItem>) {
+        if (event.value!!.favorite == 0 && event.value!!.assisted == 0 && event.value!!.upcoming == 0)
+            eventDAO.deleteEvent(event)
+    }
 
     /**
      * Gets all events that take place in one location (networking)
      * @param location
-     * @return List events
+     * @return  LiveData<ArrayList<EventItem>>
      */
     fun find(location: String): LiveData<ArrayList<EventItem>> {
         var v = MutableLiveData<ArrayList<EventItem>>()
@@ -99,7 +168,7 @@ class EventRepository private constructor(context: Context){
      * Gets all events by name and location (networking)
      * @param location
      * @param name
-     * @return
+     * @return LiveData<ArrayList<EventItem>>
      */
     fun find(location: String, name: String): LiveData<ArrayList<EventItem>> {
         var v = MutableLiveData<ArrayList<EventItem>>()
@@ -107,6 +176,4 @@ class EventRepository private constructor(context: Context){
         return v
 
     }
-
-
 }
