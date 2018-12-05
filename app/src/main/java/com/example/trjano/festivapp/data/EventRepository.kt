@@ -1,5 +1,7 @@
 package com.example.trjano.festivapp.data
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.util.EventLog
 import com.example.trjano.festivapp.data.database.AppDatabase
@@ -11,6 +13,15 @@ import kotlin.concurrent.thread
 
 class EventRepository private constructor(context: Context){
 
+    /** Todo Aañdir la lógica del funcionamiento de la base de datos
+     * Respository:
+    Debe encargarse de la lógica interna de añadir, borrar y actualizar
+    Ej: AñadirFavoritos: Si existe como Pendiente o Asistido, la tupla del evento se actualizará, si no existe se crea la tupla.
+    EliminarFavoritos: Si existe como Pendiente o Asistido. la tupla del evento se actualizará Favorite= 0, si todos están a 0 se eliminará la tupla
+    Hacer lo mismo para Pendiente y Asistidos
+
+     */
+
     val eventDAO: EventDAO = AppDatabase.getDatabase(context.getApplicationContext()).eventDAO()
     val songKickAPI: SongKickAPI = SongKickAPI
 
@@ -20,84 +31,68 @@ class EventRepository private constructor(context: Context){
      * Gets all favorite events from database source
      * @return list events
      */
-    fun getAllFavorites(): List<EventItem> {
+    fun getAllFavorites(): LiveData<List<EventItem>> = eventDAO.getAllFavorites()
 
-        var list = emptyList<EventItem>()
-        thread { list = eventDAO.getAllFavorites()}
-        return list
 
-    }
 
     /**
      * Gets all past events from database source
      * @return list events
      */
-    fun getAllPastEvents(): List<EventItem> {
-        var list = emptyList<EventItem>()
-        thread { list = eventDAO.getAllPastEvents()}
-        return list
-    }
+    fun getAllPastEvents(): LiveData<List<EventItem>> = eventDAO.getAllPastEvents()
 
     /**
      * Gets all upcoming events from database source
      * @return list events
      */
-    fun getAllUpcomingEvents(): List<EventItem> {
-        var list = emptyList<EventItem>()
-        thread { list = eventDAO.getAllUpcomingEvents()}
-        return list
-    }
+    fun getAllUpcomingEvents(): LiveData<List<EventItem>> = eventDAO.getAllUpcomingEvents()
+
 
     /**
      * Deletes all past events from database source
      */
-    fun deleteAllPastEvents() = thread { eventDAO.deleteAllPastEvents()}
-
+    fun deleteAllPastEvents() = eventDAO.deleteAllPastEvents()
 
     /**
      * Deletes all upcoming events from database source
      */
-    fun deleteAllUpcomingEvents() = thread { eventDAO.deleteAllUpcomingEvents()}
+    fun deleteAllUpcomingEvents() = eventDAO.deleteAllUpcomingEvents()
 
     /**
      * Deletes all favorite events from database source
      */
-    fun deleteAllFavorites() = thread { eventDAO.deleteAllFavorites()}
+    fun deleteAllFavorites() =  eventDAO.deleteAllFavorites()
 
     /**
      * Inserts an event into database
      * @param event
      * @return long ID from event
      */
-    fun insertEvent(event: EventItem): Long? {
-        return eventDAO.insertEvent(event)
-    }
+    fun insertEvent(event: LiveData<EventItem>): Long? = eventDAO.insertEvent(event)
 
     /**
      * Deletes an event from database
      * @param event
      */
-    fun deleteEvent(event: EventItem) = thread { eventDAO.deleteEvent(event)}
-
+    fun deleteEvent(event: LiveData<EventItem>) = eventDAO.deleteEvent(event)
 
     /**
      * Gets an event from database source
      * @param id from event
      * @return EventItem
      */
-    fun getEvent(id: Long?): EventItem {
-        return eventDAO.getEvent(id!!)
-    }
+    fun getEvent(id: Long?): LiveData<EventItem> = eventDAO.getEvent(id!!)
+
 
     /**
      * Gets all events that take place in one location (networking)
      * @param location
      * @return List events
      */
-    fun find(location: String): ArrayList<EventItem> {
-        var list = ArrayList<EventItem>()
-        thread { list = songKickAPI.find(location) }
-        return list
+    fun find(location: String): LiveData<ArrayList<EventItem>> {
+        var v = MutableLiveData<ArrayList<EventItem>>()
+        v.value = songKickAPI.find(location)
+        return v
     }
 
     /**
@@ -106,23 +101,12 @@ class EventRepository private constructor(context: Context){
      * @param name
      * @return
      */
-    fun find(location: String, name: String): ArrayList<EventItem> {
-        var list = ArrayList<EventItem>()
-        thread { list = songKickAPI.find(location, name)}
-        return list
+    fun find(location: String, name: String): LiveData<ArrayList<EventItem>> {
+        var v = MutableLiveData<ArrayList<EventItem>>()
+        v.value =  songKickAPI.find(location, name)
+        return v
 
     }
 
-    /**
-     * Dado el nombre de una ciudad de España, realiza una llamada a la API de SongKick
-     * y devuelve su ID.
-     * En caso de que no es encuentre el resultado será -1
-     * @param city
-     * @return
-     */
-    fun getCityID(city: String): String {
-        var city = ""
-        thread { city =  SongKickAPI.getCityID(city) }
-        return city
-    }
+
 }
