@@ -31,19 +31,19 @@ class EventRepository private constructor(context: Context){
      * Gets all favorite events from database source
      * @return list events
      */
-    fun getAllFavorites(): LiveData<List<EventItem>> = eventDAO.getAllFavorites()
+    fun getAllFavorites(): MutableLiveData<ArrayList<EventItem>> = eventDAO.getAllFavorites()
 
     /**
      * Gets all past events from database source
      * @return list events
      */
-    fun getAllPastEvents(): LiveData<List<EventItem>> = eventDAO.getAllPastEvents()
+    fun getAllPastEvents(): MutableLiveData<ArrayList<EventItem>> = eventDAO.getAllPastEvents()
 
     /**
      * Gets all upcoming events from database source
      * @return list events
      */
-    fun getAllUpcomingEvents(): LiveData<List<EventItem>> = eventDAO.getAllUpcomingEvents()
+    fun getAllUpcomingEvents(): MutableLiveData<ArrayList<EventItem>> = eventDAO.getAllUpcomingEvents()
 
 
     /**
