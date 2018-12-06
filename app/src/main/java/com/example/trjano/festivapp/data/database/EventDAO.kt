@@ -1,6 +1,7 @@
 package com.example.trjano.festivapp.data.database
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.persistence.room.*
 
 /**
@@ -18,15 +19,15 @@ interface EventDAO {
      * getAllEvents methods
      **********************/
     @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem.FAVORITE +"=1")
-    fun getAllFavorites(): LiveData<List<EventItem>>
+    fun getAllFavorites(): MutableLiveData<ArrayList<EventItem>>
 
 
     @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME + " WHERE "+ DBContract.EventItem.ASSISTED +"=1")
-    fun getAllPastEvents(): LiveData<List<EventItem>>
+    fun getAllPastEvents(): MutableLiveData<ArrayList<EventItem>>
 
 
     @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem.UPCOMING +"=1")
-    fun getAllUpcomingEvents(): LiveData<List<EventItem>>
+    fun getAllUpcomingEvents(): MutableLiveData<ArrayList<EventItem>>
 
     /********************
      * deleteAll methods
