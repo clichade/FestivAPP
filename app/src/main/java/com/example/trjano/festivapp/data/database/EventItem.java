@@ -11,7 +11,6 @@ import java.io.Serializable;
  * Architecture Component: Room Entity
  * Event class. It has the information about an event
  *
- * @see https://developer.android.com/training/data-storage/room/
  * <p>
  * A class labeled with Entity is stored in the AppDatabase as a table
  * It must have:

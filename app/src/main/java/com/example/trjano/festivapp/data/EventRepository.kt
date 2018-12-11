@@ -31,19 +31,19 @@ class EventRepository private constructor(context: Context){
      * Gets all favorite events from database source
      * @return list events
      */
-    fun getAllFavorites(): MutableLiveData<ArrayList<EventItem>> = eventDAO.getAllFavorites()
+    fun getAllFavorites(): LiveData<List<EventItem>> = eventDAO.getAllPastEvents()
 
     /**
      * Gets all past events from database source
      * @return list events
      */
-    fun getAllPastEvents(): MutableLiveData<ArrayList<EventItem>> = eventDAO.getAllPastEvents()
+    fun getAllPastEvents(): LiveData<List<EventItem>> = eventDAO.getAllPastEvents()
 
     /**
      * Gets all upcoming events from database source
      * @return list events
      */
-    fun getAllUpcomingEvents(): MutableLiveData<ArrayList<EventItem>> = eventDAO.getAllUpcomingEvents()
+    fun getAllUpcomingEvents(): LiveData<List<EventItem>> = eventDAO.getAllUpcomingEvents()
 
 
     /**
@@ -75,14 +75,14 @@ class EventRepository private constructor(context: Context){
 
             //If doesn't exists in database, we insert. If exists, we update
             if (eventDAO.getEvent(event.value!!._id).value == null)
-                eventDAO.insertEvent(event)
+                eventDAO.insertEvent(event.value!!)
             else
-                eventDAO.updateEvent(event)
+                eventDAO.updateEvent(event.value!!)
 
             //If the event is favorited, now it's not
         } else {
             event.value!!.favorite = 0
-            eventDAO.updateEvent(event)
+            eventDAO.updateEvent(event.value!!)
 
             //Check that event can be erasable from database
             checkErasable(event)
@@ -103,14 +103,14 @@ class EventRepository private constructor(context: Context){
 
             //If doesn't exists in database, we insert. If exists, we update
             if (eventDAO.getEvent(event.value!!._id).value == null)
-                eventDAO.insertEvent(event)
+                eventDAO.insertEvent(event.value!!)
             else
-                eventDAO.updateEvent(event)
+                eventDAO.updateEvent(event.value!!)
 
             //If the event is upcoming, now it's not
         } else {
             event.value!!.upcoming = 0
-            eventDAO.updateEvent(event)
+            eventDAO.updateEvent(event.value!!)
             //Check that event can be erasable from database
             checkErasable(event)
         }
@@ -130,13 +130,13 @@ class EventRepository private constructor(context: Context){
 
             //If doesn't exists in database, we insert. If exists, we update
             if (eventDAO.getEvent(event.value!!._id).value == null)
-                eventDAO.insertEvent(event)
+                eventDAO.insertEvent(event.value!!)
             else
-                eventDAO.updateEvent(event)
+                eventDAO.updateEvent(event.value!!)
             //If the event is assisted, now it's not
         } else {
             event.value!!.assisted = 0
-            eventDAO.updateEvent(event)
+            eventDAO.updateEvent(event.value!!)
 
             //Check that event can be erasable from database
             checkErasable(event)
@@ -150,7 +150,7 @@ class EventRepository private constructor(context: Context){
      */
     private fun checkErasable(event: LiveData<EventItem>) {
         if (event.value!!.favorite == 0 && event.value!!.assisted == 0 && event.value!!.upcoming == 0)
-            eventDAO.deleteEvent(event)
+            eventDAO.deleteEvent(event.value!!)
     }
 
     /**
@@ -158,8 +158,8 @@ class EventRepository private constructor(context: Context){
      * @param location
      * @return  LiveData<ArrayList<EventItem>>
      */
-    fun find(location: String): LiveData<ArrayList<EventItem>> {
-        var v = MutableLiveData<ArrayList<EventItem>>()
+    fun find(location: String): LiveData<List<EventItem>> {
+        var v = MutableLiveData<List<EventItem>>()
         v.value = songKickAPI.find(location)
         return v
     }
@@ -170,8 +170,8 @@ class EventRepository private constructor(context: Context){
      * @param name
      * @return LiveData<ArrayList<EventItem>>
      */
-    fun find(location: String, name: String): LiveData<ArrayList<EventItem>> {
-        var v = MutableLiveData<ArrayList<EventItem>>()
+    fun find(location: String, name: String): LiveData<List<EventItem>> {
+        var v = MutableLiveData<List<EventItem>>()
         v.value =  songKickAPI.find(location, name)
         return v
 

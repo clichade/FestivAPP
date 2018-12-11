@@ -18,13 +18,13 @@ class EventListActivityViewModel(application: Application) : AndroidViewModel(ap
     private val mRepository: EventRepository = EventRepository.getInstance(this.getApplication<Application>().applicationContext)
 
     /**The List of EventItem we want to operate*/
-     var eventList = MutableLiveData<ArrayList<EventItem>>()
+     var eventList = MutableLiveData<List<EventItem>>()
 
     /**
      * Sets the eventList to the ViewModel
      * @param list
      */
-    fun setValue(list: ArrayList<EventItem>) {
+    fun setValue(list: List<EventItem>) {
         eventList.value = list
     }
 
@@ -32,7 +32,7 @@ class EventListActivityViewModel(application: Application) : AndroidViewModel(ap
      * Gets all past events from database source, calling repository
      * @return list events
      */
-    fun getAllPastEvents(): MutableLiveData<ArrayList<EventItem>> {
+    fun getAllPastEvents(): LiveData<List<EventItem>> {
         return mRepository.getAllPastEvents()
     }
 
@@ -40,7 +40,7 @@ class EventListActivityViewModel(application: Application) : AndroidViewModel(ap
      * Gets all upcoming events from database source, calling repository
      * @return list events
      */
-    fun getAllUpcomingEvents(): MutableLiveData<ArrayList<EventItem>> {
+    fun getAllUpcomingEvents(): LiveData<List<EventItem>> {
         return mRepository.getAllUpcomingEvents()
     }
 
@@ -48,7 +48,7 @@ class EventListActivityViewModel(application: Application) : AndroidViewModel(ap
      * Gets all favorite events from database source, calling repository
      * @return list events
      */
-    fun getAllFavoriteEvents(): MutableLiveData<ArrayList<EventItem>> {
+    fun getAllFavoriteEvents(): LiveData<List<EventItem>> {
         return mRepository.getAllFavorites()
     }
 
@@ -57,7 +57,7 @@ class EventListActivityViewModel(application: Application) : AndroidViewModel(ap
      * @param location
      * @return  LiveData<ArrayList<EventItem>>
      */
-    fun find(location: String): LiveData<ArrayList<EventItem>> {
+    fun find(location: String): LiveData<List<EventItem>> {
         return mRepository.find(location)
     }
 
@@ -67,7 +67,7 @@ class EventListActivityViewModel(application: Application) : AndroidViewModel(ap
      * @param name
      * @return LiveData<ArrayList<EventItem>>
      */
-    fun find(location: String, name: String): LiveData<ArrayList<EventItem>> {
+    fun find(location: String, name: String): LiveData<List<EventItem>> {
         return mRepository.find(location, name)
     }
 

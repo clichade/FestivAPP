@@ -19,15 +19,15 @@ interface EventDAO {
      * getAllEvents methods
      **********************/
     @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem.FAVORITE +"=1")
-    fun getAllFavorites(): MutableLiveData<ArrayList<EventItem>>
+    fun getAllFavorites(): LiveData<List<EventItem>>
 
 
     @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME + " WHERE "+ DBContract.EventItem.ASSISTED +"=1")
-    fun getAllPastEvents(): MutableLiveData<ArrayList<EventItem>>
+    fun getAllPastEvents(): LiveData<List<EventItem>>
 
 
     @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem.UPCOMING +"=1")
-    fun getAllUpcomingEvents(): MutableLiveData<ArrayList<EventItem>>
+    fun getAllUpcomingEvents(): LiveData<List<EventItem>>
 
     /********************
      * deleteAll methods
@@ -47,15 +47,15 @@ interface EventDAO {
      *          CRUD        *
      ************************/
     @Insert
-    fun insertEvent(item: LiveData<EventItem>): Long
+    fun insertEvent(item: EventItem): Long
 
     @Delete
-    fun deleteEvent(item: LiveData<EventItem>)
+    fun deleteEvent(item: EventItem)
 
     @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem._ID+" = :id")
     fun getEvent(id: Long): LiveData<EventItem>
 
     @Update
-    fun updateEvent(item: LiveData<EventItem>)
+    fun updateEvent(item: EventItem)
 
 }

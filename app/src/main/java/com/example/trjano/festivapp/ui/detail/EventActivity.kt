@@ -42,7 +42,7 @@ class EventActivity : AppCompatActivity() {
         val event = intent.extras.get("event") as EventItem
 
         //Get the ViewModel from the Activity
-        mViewModel = ViewModelProviders.of(this).get(EventActivityViewModel::class.java)
+        mViewModel = ViewModelProviders.of(this).get(EventActivityViewModel(application)::class.java)
 
 
         //Sets the data to the ViewModel
