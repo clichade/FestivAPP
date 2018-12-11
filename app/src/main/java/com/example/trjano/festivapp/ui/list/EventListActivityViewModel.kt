@@ -18,14 +18,14 @@ class EventListActivityViewModel(application: Application) : AndroidViewModel(ap
     private val mRepository: EventRepository = EventRepository.getInstance(this.getApplication<Application>().applicationContext)
 
     /**The List of EventItem we want to operate*/
-    private var eventList = MutableLiveData<ArrayList<EventItem>>()
+     var eventList = MutableLiveData<ArrayList<EventItem>>()
 
     /**
      * Sets the eventList to the ViewModel
      * @param list
      */
-    fun setValue(list: MutableLiveData<ArrayList<EventItem>>) {
-        eventList = list
+    fun setValue(list: ArrayList<EventItem>) {
+        eventList.value = list
     }
 
     /**

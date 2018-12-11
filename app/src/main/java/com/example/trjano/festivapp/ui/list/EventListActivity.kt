@@ -1,5 +1,7 @@
 package com.example.trjano.festivapp.ui.list
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -26,71 +28,63 @@ class EventListActivity : AppCompatActivity() {
     lateinit var binding: ActivityEventListBinding
     private lateinit var viewAdapter: EventListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var mViewModel: EventListActivityViewModel
+    var eventList : ArrayList<EventItem> = ArrayList()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_event_list)
 
+
+
+        mViewModel = ViewModelProviders.of(this).get(EventListActivityViewModel::class.java)
+        mViewModel.setValue(eventList)
+
         event_list_setup()
+        mViewModel.eventList.observe(this, Observer { event_list ->
+            async {
+                if (intent.extras.getString("Type").isNullOrBlank())
+                    load_search()
+                else
+                    load_table()
+
+                uiThread {viewAdapter.update(eventList) }
+            }
+        })
 
 
-        if (intent.extras.getString("Type").isNullOrBlank())
-            load_search()
-        else
-            load_table()
+
+
 
     }
 
     fun load_table(){
-        val db : AppDatabase = AppDatabase.getDatabase(this)
-
-        var new_list: List<EventItem> = ArrayList()
-
-        //Todo: Sustituir usando viewmodel
-        /*
         when (intent.extras.getString("Type")){
-            "FAVORITES_EVENTS" -> new_list = db.eventDAO().getAllFavorites()
-            "UPCOMING_EVENTS" -> new_list = db.eventDAO().getAllUpcomingEvents()
-            "PAST_EVENTS" -> new_list = db.eventDAO().getAllPastEvents()
-            else -> new_list = ArrayList()
+            "FAVORITES_EVENTS" -> eventList = mViewModel.getAllFavoriteEvents().value!!
+            "UPCOMING_EVENTS" -> eventList = mViewModel.getAllUpcomingEvents().value!!
+            "PAST_EVENTS" -> eventList = mViewModel.getAllPastEvents().value!!
         }
-        */
-
-        async {
-            uiThread { viewAdapter.update(ArrayList(new_list)) }
-        }
-
-
-
     }
 
+    /**
+     * Una vez comprobado que se ha pedido unas búsqueda. Se realizará una bússqueda en función de los parámetros insertados
+     */
     fun load_search(){
 
         val location = intent.extras.getString("location")
         val name = intent.extras.getString("name")
 
-        //Todo: Sustituir usando viewmodel
-      /*  async {
-            var new_list: ArrayList<EventItem>
-
-            when {
-            !name.isNullOrBlank() -> new_list = SongKickAPI.find(location, name)
-            else  -> new_list = SongKickAPI.find(location)
-            }
-
-
-            uiThread { viewAdapter.update(new_list) }
-        }*/
-
+            if(!name.isNullOrBlank()) eventList = mViewModel.find(location, name).value!!
+            else  eventList = mViewModel.find(location).value!!
     }
 
     fun event_list_setup(){
 
-        val list = arrayListOf<EventItem>()
+
 
         viewManager = GridLayoutManager(this,2)
-        viewAdapter = EventListAdapter(list)
+        viewAdapter = EventListAdapter(eventList)
 
 
         viewAdapter.onItemClick = { EventItem ->
