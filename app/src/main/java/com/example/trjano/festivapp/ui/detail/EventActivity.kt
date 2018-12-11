@@ -44,13 +44,17 @@ class EventActivity : AppCompatActivity() {
         //Get the ViewModel from the Activity
         mViewModel = ViewModelProviders.of(this).get(EventActivityViewModel::class.java)
 
+
         //Sets the data to the ViewModel
         mViewModel.setValue(event)
 
         //Observing to changing Fav, Pend, Assisted buttons
         mViewModel.eventItem.observe(this, Observer { event_item ->
             async {
-                uiThread { check_status() }
+                uiThread {
+                    check_status()
+                    btn_setup()
+                }
             }
         })
 
