@@ -39,12 +39,12 @@ dependencies {
     def room_version = "1.1.1"
 
     implementation "android.arch.persistence.room:runtime:$room_version"
-    annotationProcessor "android.arch.persistence.room:compiler:$room_version" // use kapt for Kotli
+    kapt "android.arch.persistence.room:compiler:$room_version" // use kapt for Kotli
     implementation 'org.jetbrains.anko:anko-sdk15:0.8.2' // sdk19, sdk21, sdk23 are also available
     implementation 'org.jetbrains.anko:anko-support-v4:0.8.2' // In case you need support-v4 bindings
     implementation 'org.jetbrains.anko:anko-appcompat-v7:0.8.2' // For appcompat-v7 bindings
 
     implementation "android.arch.lifecycle:runtime:1.1.1"
     implementation "android.arch.lifecycle:extensions:1.1.1"
-    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+    kapt "android.arch.lifecycle:compiler:1.1.1"
 }

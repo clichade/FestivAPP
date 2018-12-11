@@ -20,8 +20,10 @@ import com.example.trjano.festivapp.databinding.ActivityEventListBinding
 
 
 import org.jetbrains.anko.async
+import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import java.io.Serializable
+import java.lang.Exception
 
 class EventListActivity : AppCompatActivity() {
 
@@ -29,7 +31,7 @@ class EventListActivity : AppCompatActivity() {
     private lateinit var viewAdapter: EventListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var mViewModel: EventListActivityViewModel
-    var eventList : ArrayList<EventItem> = ArrayList()
+    var eventList : List<EventItem> = listOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,30 +40,45 @@ class EventListActivity : AppCompatActivity() {
 
 
 
-        mViewModel = ViewModelProviders.of(this).get(EventListActivityViewModel::class.java)
+
+        mViewModel = ViewModelProviders.of(this).get(EventListActivityViewModel(application)::class.java)
         mViewModel.setValue(eventList)
 
         event_list_setup()
+        Log.d("prueba", "antesAsync")
         mViewModel.eventList.observe(this, Observer { event_list ->
             async {
-                if (intent.extras.getString("Type").isNullOrBlank())
+                if (intent.extras.getString("Type").isNullOrBlank()) {
+                    Log.d("prueba", "entraIf")
                     load_search()
-                else
+                }
+                else {
+                    Log.d("prueba", "entraElse")
                     load_table()
+                    Log.d("prueba", "entraPostElse")
+                }
 
-                uiThread {viewAdapter.update(eventList) }
+                uiThread {
+                    viewAdapter.update(ArrayList(eventList))
+                    Log.d("prueba", "tamaniolista: ${event_list?.size}")
+                }
             }
         })
-
-
-
-
-
     }
 
     fun load_table(){
+
+
+
+        Log.d("prueba", "antes")
+         mViewModel.getAllFavoriteEvents().value
+
         when (intent.extras.getString("Type")){
-            "FAVORITES_EVENTS" -> eventList = mViewModel.getAllFavoriteEvents().value!!
+            "FAVORITES_EVENTS" -> {
+
+                eventList = mViewModel.getAllFavoriteEvents().value!!
+                Log.d("prueba", "despues")
+            }
             "UPCOMING_EVENTS" -> eventList = mViewModel.getAllUpcomingEvents().value!!
             "PAST_EVENTS" -> eventList = mViewModel.getAllPastEvents().value!!
         }
@@ -84,7 +101,7 @@ class EventListActivity : AppCompatActivity() {
 
 
         viewManager = GridLayoutManager(this,2)
-        viewAdapter = EventListAdapter(eventList)
+        viewAdapter = EventListAdapter(ArrayList(eventList))
 
 
         viewAdapter.onItemClick = { EventItem ->
