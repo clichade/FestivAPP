@@ -2,7 +2,9 @@ package com.example.trjano.festivapp.ui.detail
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.util.Log
 
 import com.example.trjano.festivapp.data.EventRepository
 import com.example.trjano.festivapp.data.database.EventItem
@@ -16,16 +18,22 @@ class EventActivityViewModel(application: Application) : AndroidViewModel(applic
     /**Instance to repository which have all necessary actions for EventItem*/
     private val mRepository: EventRepository = EventRepository.getInstance(this.getApplication<Application>().applicationContext)
 
+    lateinit var eventItem: EventItem
     /**The EventItem we want to operate*/
-    val eventItem = MutableLiveData<EventItem>()
+    var liveDataEventItem : LiveData<EventItem?> = mRepository.getLiveDataEvent(id)
 
 
     /**
-     * Sets the eventItem to the ViewModel
+     * Sets the liveDataEventItem to the ViewModel
      * @param event
      */
     fun setValue(event: EventItem){
-        eventItem.value = event
+            this.eventItem = event
+    }
+
+    fun eventSetUp(){
+
+
     }
 
     /**
@@ -34,7 +42,8 @@ class EventActivityViewModel(application: Application) : AndroidViewModel(applic
      * If the event is not marked in any category, the event is deleted
      */
     fun updateFavorite() {
-        mRepository.updateFavorite(eventItem)
+        eventSetUp()
+        mRepository.updateFavorite(liveDataEventItem)
     }
 
     /**
@@ -43,7 +52,8 @@ class EventActivityViewModel(application: Application) : AndroidViewModel(applic
      * If the event is not marked in any category, the event is deleted
      */
     fun updateUpcoming() {
-        mRepository.updateUpcoming(eventItem)
+        eventSetUp()
+        mRepository.updateUpcoming(liveDataEventItem)
     }
 
     /**
@@ -52,7 +62,9 @@ class EventActivityViewModel(application: Application) : AndroidViewModel(applic
      * If the event is not marked in any category, the event is deleted
      */
     fun updateAssisted() {
-        mRepository.updateAssisted(eventItem)
+        eventSetUp()
+
+        mRepository.updateAssisted(liveDataEventItem)
     }
 
     /**
@@ -60,15 +72,22 @@ class EventActivityViewModel(application: Application) : AndroidViewModel(applic
      * @return boolean
      */
     fun isFavorite(): Boolean {
-        return eventItem.value!!.favorite == 1
+        if (liveDataEventItem.value == null){
+            Log.d("eventos","EVENT ITEM ES NULL")
+        }
+
+        return mRepository.isFavorite(liveDataEventItem.value!!)
     }
+
+
+
 
     /**
      * Checks if event is marked as upcoming
      * @return boolean
      */
     fun isUpcoming(): Boolean {
-        return eventItem.value!!.upcoming == 1
+        return mRepository.isUpcoming(liveDataEventItem.value!!)
     }
 
     /**
@@ -76,7 +95,7 @@ class EventActivityViewModel(application: Application) : AndroidViewModel(applic
      * @return boolean
      */
     fun isAssisted(): Boolean {
-        return eventItem.value!!.assisted == 1
+        return mRepository.isAssisted(liveDataEventItem.value!!)
     }
 
 }

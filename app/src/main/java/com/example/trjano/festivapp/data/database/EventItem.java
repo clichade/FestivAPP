@@ -3,6 +3,7 @@ package com.example.trjano.festivapp.data.database;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -18,12 +19,16 @@ import java.io.Serializable;
  * - PrimaryKey = primary key of the table. Should be autoGenerate = true for insertions
  * - ColumnInfo (opt) = gives another name to the attribute
  */
-@Entity(tableName = DBContract.EventItem.TABLE_NAME)
+@Entity(indices = {@Index(value = {DBContract.EventItem.SONGKICK_ID},unique = true)},
+        tableName = DBContract.EventItem.TABLE_NAME)
 public class EventItem implements Serializable {
 
     /**Primary key of the table*/
     @PrimaryKey(autoGenerate = true)
     private long _id;
+
+    @ColumnInfo(name= DBContract.EventItem.SONGKICK_ID)
+    private long songkickID;
 
     /**Name of the event*/
     @ColumnInfo(name = DBContract.EventItem.NAME)
@@ -71,8 +76,9 @@ public class EventItem implements Serializable {
      * @param artists
      * @param type
      */
-    public EventItem(long id, String name, String city, String startDate, String location, String artists, String type) {
+    public EventItem(long id,long songkickID, String name, String city, String startDate, String location, String artists, String type) {
         this._id = id;
+        this.songkickID = songkickID;
         this.name = name;
         this.city = city;
         this.startDate=startDate;
@@ -210,5 +216,13 @@ public class EventItem implements Serializable {
      */
     public long get_id() {
         return _id;
+    }
+
+    public void setSongkickID(long songkickID) {
+        this.songkickID = songkickID;
+    }
+
+    public long getSongkickID() {
+        return songkickID;
     }
 }

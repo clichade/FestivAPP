@@ -3,6 +3,7 @@ package com.example.trjano.festivapp.data
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
+import android.util.Log
 import com.example.trjano.festivapp.data.database.AppDatabase
 import com.example.trjano.festivapp.data.database.EventDAO
 import com.example.trjano.festivapp.data.database.EventItem
@@ -61,32 +62,80 @@ class EventRepository private constructor(context: Context){
      */
     fun deleteAllFavorites() =  eventDAO.deleteAllFavorites()
 
+    fun isFavorite(event: EventItem): Boolean {
+        val e: EventItem? = eventDAO.getEvent(event.songkickID)
+
+        if (e == null){
+            Log.d("eventos","ES NULL")
+        }
+
+        else if (e.favorite == 1){
+            Log.d("eventos","ES FAVORITO")
+        }
+        else{
+            Log.d("eventos","NO ES FAVORITO")
+        }
+
+        return if(e == null) {false}
+
+        else e.favorite == 1
+
+    }
+
+    fun isUpcoming(event: EventItem): Boolean {
+        val e: EventItem? = eventDAO.getEvent(event.songkickID)
+
+        return if(e == null) false
+        else e.upcoming == 1
+    }
+
+    fun isAssisted(event: EventItem): Boolean {
+        val e: EventItem? = eventDAO.getEvent(event.songkickID)
+
+        return if(e == null) false
+        else e.assisted == 1
+    }
+
+    fun getEvent(id: Long): EventItem? {
+        return eventDAO.getEvent(id)
+    }
+
+    fun getLiveDataEvent(id: Long): LiveData<EventItem?> {
+        return eventDAO.getLiveDataEvent(id)
+    }
+
+
     /**
      * Inserts an favorite event into database if doesn't exists.
      * If exists, it changes to 0.
      * If the event is not marked in any category, the event is deleted
      * @param event
      */
-    fun updateFavorite(event: LiveData<EventItem>) {
+    fun updateFavorite(event: LiveData<EventItem?>) {
 
-        //If the event is not favorite, now it is
-        if (event.value!!.favorite == 0) {
-            event.value!!.favorite = 1
+            //If the event is not favorite, now it is
+            if (event.value!!.favorite == 0) {
+                event.value!!.favorite = 1
 
-            //If doesn't exists in database, we insert. If exists, we update
-            if (eventDAO.getEvent(event.value!!._id).value == null)
-                eventDAO.insertEvent(event.value!!)
-            else
-                eventDAO.updateEvent(event.value!!)
+                //If doesn't exists in database, we insert. If exists, we update
+                if (eventDAO.getEvent(event.value!!.songkickID) == null)
+                    eventDAO.insertEvent(event.value!!)
+                else
+                    eventDAO.updateEvent(event.value!!)
 
-            //If the event is favorited, now it's not
-        } else {
-            event.value!!.favorite = 0
-            eventDAO.updateEvent(event.value!!)
+                //If the event is favorited, now it's not
+            } else {
+                event.value!!.favorite = 0
+                //If doesn't exists in database, we insert. If exists, we update
+                if (eventDAO.getEvent(event.value!!.songkickID) == null)
+                    eventDAO.insertEvent(event.value!!)
+                else
+                    eventDAO.updateEvent(event.value!!)
 
-            //Check that event can be erasable from database
-            checkErasable(event)
-        }
+                //Check that event can be erasable from database
+                checkErasable(event)
+            }
+
     }
 
     /**
@@ -95,17 +144,26 @@ class EventRepository private constructor(context: Context){
      * If the event is not marked in any category, the event is deleted
      * @param event
      */
-    fun updateUpcoming(event: LiveData<EventItem>) {
+    fun updateUpcoming(event: LiveData<EventItem?>) {
 
+
+
+        Log.d("eventos","PRE F: ${event.value!!.upcoming} A: ${event.value!!.assisted} U: ${event.value!!.upcoming}")
         //If the event is not upcoming, now it is
         if (event.value!!.upcoming == 0) {
             event.value!!.upcoming = 1
 
+            Log.d("eventos","JUSTO ANTES F: ${event.value!!.upcoming} A: ${event.value!!.assisted} U: ${event.value!!.upcoming}")
             //If doesn't exists in database, we insert. If exists, we update
-            if (eventDAO.getEvent(event.value!!._id).value == null)
+            if (eventDAO.getEvent(event.value!!.songkickID) == null) {
                 eventDAO.insertEvent(event.value!!)
-            else
+                Log.d("eventos","No existía en base de datos")
+            }
+            else {
                 eventDAO.updateEvent(event.value!!)
+                Log.d("eventos","Existía en base de datos")
+                Log.d("eventos","JUSTO DESPUES: ${event.value!!.upcoming} A: ${event.value!!.assisted} U: ${event.value!!.upcoming}")
+            }
 
             //If the event is upcoming, now it's not
         } else {
@@ -114,6 +172,7 @@ class EventRepository private constructor(context: Context){
             //Check that event can be erasable from database
             checkErasable(event)
         }
+        Log.d("eventos","POST F: ${event.value!!.upcoming} A: ${event.value!!.assisted} U: ${event.value!!.upcoming}")
     }
 
     /**
@@ -122,14 +181,14 @@ class EventRepository private constructor(context: Context){
      * If the event is not marked in any category, the event is deleted
      * @param event
      */
-    fun updateAssisted(event: LiveData<EventItem>) {
+    fun updateAssisted(event: LiveData<EventItem?>) {
 
         //If the event is not assisted, now it is
         if (event.value!!.assisted == 0) {
             event.value!!.assisted = 1
 
             //If doesn't exists in database, we insert. If exists, we update
-            if (eventDAO.getEvent(event.value!!._id).value == null)
+            if (eventDAO.getEvent(event.value!!.songkickID) == null)
                 eventDAO.insertEvent(event.value!!)
             else
                 eventDAO.updateEvent(event.value!!)
@@ -148,7 +207,7 @@ class EventRepository private constructor(context: Context){
      * (Favorite, Assisted and Upcoming are equal to 0
      * @param event
      */
-    private fun checkErasable(event: LiveData<EventItem>) {
+    private fun checkErasable(event: LiveData<EventItem?>) {
         if (event.value!!.favorite == 0 && event.value!!.assisted == 0 && event.value!!.upcoming == 0)
             eventDAO.deleteEvent(event.value!!)
     }
@@ -160,7 +219,7 @@ class EventRepository private constructor(context: Context){
      */
     fun find(location: String): LiveData<List<EventItem>> {
         var v = MutableLiveData<List<EventItem>>()
-        v.value = songKickAPI.find(location)
+        v.postValue(songKickAPI.find(location))
         return v
     }
 
@@ -172,7 +231,7 @@ class EventRepository private constructor(context: Context){
      */
     fun find(location: String, name: String): LiveData<List<EventItem>> {
         var v = MutableLiveData<List<EventItem>>()
-        v.value =  songKickAPI.find(location, name)
+        v.postValue(songKickAPI.find(location, name))
         return v
 
     }

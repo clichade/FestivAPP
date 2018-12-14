@@ -19,6 +19,7 @@ public final class DBContract {
         public static final String DATABASE_NAME = "events.db";
 
         /**Name given to Event attributes*/
+        public static final String SONGKICK_ID = "songkick_ID";
         public static final String FAVORITE = "favorite";
         public static final String UPCOMING = "upcoming";
         public static final String ASSISTED = "assisted";

@@ -1,5 +1,6 @@
 package com.example.trjano.festivapp.data.network
 
+import android.util.Log
 import com.example.trjano.festivapp.data.database.EventItem
 import org.json.JSONArray
 
@@ -20,6 +21,7 @@ object SongKickAPI {
      * @param location_name
      */
     fun find(location_name: String): ArrayList<EventItem>{
+
         val event_list = ArrayList<EventItem>()
         val location_id = getCityID(location_name)
 
@@ -33,6 +35,7 @@ object SongKickAPI {
             event_list.add(event_item)
 
         }
+
         return event_list
     }
 
@@ -79,7 +82,7 @@ object SongKickAPI {
         var type = "0"//Check if it is a festival or a concert
         if (type_real.equals("Festival")) {type = "1"}
 
-        val event = EventItem(id.toLong(), name, city, start_date, location, artists, type)
+        val event = EventItem(0,id.toLong(), name, city, start_date, location, artists, type)
         return event
     }
 
