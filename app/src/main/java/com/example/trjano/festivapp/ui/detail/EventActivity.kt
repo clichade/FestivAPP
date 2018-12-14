@@ -16,8 +16,10 @@ import com.example.trjano.festivapp.databinding.ActivityEventBinding
 import org.jetbrains.anko.backgroundDrawable
 import org.jetbrains.anko.toast
 import android.arch.lifecycle.ViewModelProviders
+import android.util.Log
 import org.jetbrains.anko.async
 import org.jetbrains.anko.uiThread
+import java.lang.Exception
 
 /**
  * Activity with details of an event (concert or festival)
@@ -48,14 +50,11 @@ class EventActivity : AppCompatActivity() {
         //Sets the data to the ViewModel
         mViewModel.setValue(event)
 
+
         //Observing to changing Fav, Pend, Assisted buttons
-        mViewModel.eventItem.observe(this, Observer { event_item ->
-            async {
-                uiThread {
+        mViewModel.liveDataEventItem.observe(this, Observer { event_item ->
                     check_status()
                     btn_setup()
-                }
-            }
         })
 
         //Bind all the View elements to the layout
@@ -76,9 +75,18 @@ class EventActivity : AppCompatActivity() {
      * if should be turned on or not
      */
     private fun check_status() {
-        if (mViewModel.isFavorite()) btnFavorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite)
-        if (mViewModel.isUpcoming()) btnUpcoming.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending)
-        if (mViewModel.isAssisted()) btnAssisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted)
+        async {
+
+            if (mViewModel.isFavorite()) {
+                uiThread { btnFavorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite) }
+            }
+            if (mViewModel.isUpcoming()) {
+                uiThread { btnUpcoming.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending) }
+            }
+            if (mViewModel.isAssisted()){
+                uiThread { btnAssisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted) }
+            }
+        }
     }
 
     /**
@@ -87,47 +95,75 @@ class EventActivity : AppCompatActivity() {
      */
     private fun btn_setup() {
 
-        //If clicked, loads icon (turned on/off) asking ViewModel
-        btnFavorite.setOnClickListener {
-            if (mViewModel.isFavorite()) {
-                btnFavorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite_no)
-                   toast(resources.getString(R.string.toast_removed_favor))
-               } else {
-                btnFavorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite)
-                   toast(resources.getString(R.string.toast_add_favorites))
-               }
+            //If clicked, loads icon (turned on/off) asking ViewModel
+            btnFavorite.setOnClickListener {
+                async {
+                if (mViewModel.isFavorite()) {
+                    uiThread {
+                        btnFavorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite_no)
+                        toast(resources.getString(R.string.toast_removed_favor))
+                    }
+                } else {
+                    uiThread {
+                        btnFavorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite)
+                        toast(resources.getString(R.string.toast_add_favorites))
+                    }
+                }
 
-            //Make the data change
-            mViewModel.updateFavorite()
-           }
 
-        //If clicked, loads icon (turned on/off) asking ViewModel
-        btnUpcoming.setOnClickListener {
-            if (mViewModel.isUpcoming()) {
-                btnUpcoming.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending_no)
-                   toast(resources.getString(R.string.toast_removed_pending))
-               }
-               else {
-                btnUpcoming.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending)
-                   toast(resources.getString(R.string.toast_add_pending))
-               }
-            //Make the data change
-            mViewModel.updateUpcoming()
-           }
+                    try {
+                        mViewModel.updateFavorite()
+                        Log.d("eventos", "FavoriteState Altered")
+                    } catch (e: Exception) {
+                        Log.d("eventos", e.message)
+                    }
+                }
 
-        //If clicked, loads icon (turned on/off) asking ViewModel
-        btnAssisted.setOnClickListener {
-            if (mViewModel.isAssisted()) {
-                btnAssisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted_no)
-                   toast(resources.getString(R.string.toast_removed_assisted))
-               }
-               else {
-                btnAssisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted)
-                   toast(resources.getString(R.string.toast_add_assisted))
-               }
-            //Make the data change
-            mViewModel.updateAssisted()
-        }
+                Log.d("eventos", "postUpdate")
+            }
+
+            //If clicked, loads icon (turned on/off) asking ViewModel
+            btnUpcoming.setOnClickListener {
+                async {
+                    if (mViewModel.isUpcoming()) {
+                        uiThread {
+                            btnUpcoming.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending_no)
+                            toast(resources.getString(R.string.toast_removed_pending))
+                        }
+                    } else {
+                        uiThread {
+                            btnUpcoming.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending)
+                            toast(resources.getString(R.string.toast_add_pending))
+                        }
+                    }
+                    //Make the data change
+
+                        mViewModel.updateUpcoming()
+                }
+            }
+
+            //If clicked, loads icon (turned on/off) asking ViewModel
+            btnAssisted.setOnClickListener {
+                async {
+                    if (mViewModel.isAssisted()) {
+                        uiThread {
+                            btnAssisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted_no)
+                            toast(resources.getString(R.string.toast_removed_assisted))
+                        }
+                    } else {
+                        uiThread {
+                            btnAssisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted)
+                            toast(resources.getString(R.string.toast_add_assisted))
+                        }
+                    }
+                    //Make the data change
+
+                    mViewModel.updateAssisted()
+
+                }
+            }
+
+
     }
 
     /**

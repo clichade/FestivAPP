@@ -52,8 +52,11 @@ interface EventDAO {
     @Delete
     fun deleteEvent(item: EventItem)
 
-    @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem._ID+" = :id")
-    fun getEvent(id: Long): LiveData<EventItem>
+    @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem.SONGKICK_ID+" = :id")
+    fun getEvent(id: Long): EventItem?
+
+    @Query("SELECT * FROM "+ DBContract.EventItem.TABLE_NAME +" WHERE "+ DBContract.EventItem.SONGKICK_ID+" = :id")
+    fun getLiveDataEvent(id: Long): LiveData<EventItem?>
 
     @Update
     fun updateEvent(item: EventItem)

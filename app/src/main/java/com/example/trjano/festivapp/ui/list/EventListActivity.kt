@@ -31,7 +31,7 @@ class EventListActivity : AppCompatActivity() {
     private lateinit var viewAdapter: EventListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var mViewModel: EventListActivityViewModel
-    var eventList : List<EventItem> = listOf()
+    var eventList : List<EventItem>? = listOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,25 +42,29 @@ class EventListActivity : AppCompatActivity() {
 
 
         mViewModel = ViewModelProviders.of(this).get(EventListActivityViewModel(application)::class.java)
-        mViewModel.setValue(eventList)
+        mViewModel.setValue(this.eventList)
 
         event_list_setup()
         Log.d("prueba", "antesAsync")
         mViewModel.eventList.observe(this, Observer { event_list ->
             async {
                 if (intent.extras.getString("Type").isNullOrBlank()) {
-                    Log.d("prueba", "entraIf")
                     load_search()
                 }
                 else {
-                    Log.d("prueba", "entraElse")
                     load_table()
-                    Log.d("prueba", "entraPostElse")
                 }
 
+                //Todo: eventlist aveces es necesitada mas rapido de lo que carga, buscar una solución
                 uiThread {
+                    Log.d("prueba", "Primero")
+                    if(eventList == null)
+                         eventList = listOf()
+
                     viewAdapter.update(ArrayList(eventList))
+                    Log.d("prueba", "Segundo")
                     Log.d("prueba", "tamaniolista: ${event_list?.size}")
+                    Log.d("prueba", "Tercero")
                 }
             }
         })
@@ -68,20 +72,13 @@ class EventListActivity : AppCompatActivity() {
 
     fun load_table(){
 
-
-
-        Log.d("prueba", "antes")
-         mViewModel.getAllFavoriteEvents().value
-
         when (intent.extras.getString("Type")){
-            "FAVORITES_EVENTS" -> {
-
-                eventList = mViewModel.getAllFavoriteEvents().value!!
-                Log.d("prueba", "despues")
-            }
-            "UPCOMING_EVENTS" -> eventList = mViewModel.getAllUpcomingEvents().value!!
-            "PAST_EVENTS" -> eventList = mViewModel.getAllPastEvents().value!!
+            "FAVORITES_EVENTS" -> eventList = mViewModel.getAllFavoriteEvents().value
+            "UPCOMING_EVENTS" -> eventList = mViewModel.getAllUpcomingEvents().value
+            "PAST_EVENTS" -> eventList = mViewModel.getAllPastEvents().value
         }
+
+        if (eventList == null) eventList = listOf()
     }
 
     /**
@@ -92,8 +89,20 @@ class EventListActivity : AppCompatActivity() {
         val location = intent.extras.getString("location")
         val name = intent.extras.getString("name")
 
-            if(!name.isNullOrBlank()) eventList = mViewModel.find(location, name).value!!
-            else  eventList = mViewModel.find(location).value!!
+            if(!name.isNullOrBlank()) eventList = mViewModel.find(location, name).value
+            else {
+                Log.d("prueba", "AntesSearch")
+                try {
+                    eventList = mViewModel.find(location).value
+                }
+                catch (e: Exception){
+                    Log.d("prueba", e.message)
+                }
+
+
+            }
+
+
     }
 
     fun event_list_setup(){

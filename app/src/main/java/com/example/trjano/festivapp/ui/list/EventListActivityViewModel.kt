@@ -24,7 +24,7 @@ class EventListActivityViewModel(application: Application) : AndroidViewModel(ap
      * Sets the eventList to the ViewModel
      * @param list
      */
-    fun setValue(list: List<EventItem>) {
+    fun setValue(list: List<EventItem>?) {
         eventList.value = list
     }
 
