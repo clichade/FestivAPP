@@ -32,7 +32,7 @@ class EventListActivityViewModel(application: Application) : AndroidViewModel(ap
      * Gets all past events from database source, calling repository
      * @return list events
      */
-    fun getAllPastEvents(): LiveData<List<EventItem>> {
+    fun getAllPastEvents(): List<EventItem> {
         return mRepository.getAllPastEvents()
     }
 
@@ -40,7 +40,7 @@ class EventListActivityViewModel(application: Application) : AndroidViewModel(ap
      * Gets all upcoming events from database source, calling repository
      * @return list events
      */
-    fun getAllUpcomingEvents(): LiveData<List<EventItem>> {
+    fun getAllUpcomingEvents(): List<EventItem> {
         return mRepository.getAllUpcomingEvents()
     }
 
@@ -48,7 +48,7 @@ class EventListActivityViewModel(application: Application) : AndroidViewModel(ap
      * Gets all favorite events from database source, calling repository
      * @return list events
      */
-    fun getAllFavoriteEvents(): LiveData<List<EventItem>> {
+    fun getAllFavoriteEvents(): List<EventItem> {
         return mRepository.getAllFavorites()
     }
 
@@ -57,7 +57,7 @@ class EventListActivityViewModel(application: Application) : AndroidViewModel(ap
      * @param location
      * @return  LiveData<ArrayList<EventItem>>
      */
-    fun find(location: String): LiveData<List<EventItem>> {
+    fun find(location: String): List<EventItem> {
         return mRepository.find(location)
     }
 
@@ -67,7 +67,7 @@ class EventListActivityViewModel(application: Application) : AndroidViewModel(ap
      * @param name
      * @return LiveData<ArrayList<EventItem>>
      */
-    fun find(location: String, name: String): LiveData<List<EventItem>> {
+    fun find(location: String, name: String): List<EventItem> {
         return mRepository.find(location, name)
     }
 

@@ -73,9 +73,9 @@ class EventListActivity : AppCompatActivity() {
     fun load_table(){
 
         when (intent.extras.getString("Type")){
-            "FAVORITES_EVENTS" -> eventList = mViewModel.getAllFavoriteEvents().value
-            "UPCOMING_EVENTS" -> eventList = mViewModel.getAllUpcomingEvents().value
-            "PAST_EVENTS" -> eventList = mViewModel.getAllPastEvents().value
+            "FAVORITES_EVENTS" -> eventList = mViewModel.getAllFavoriteEvents()
+            "UPCOMING_EVENTS" -> eventList = mViewModel.getAllUpcomingEvents()
+            "PAST_EVENTS" -> eventList = mViewModel.getAllPastEvents()
         }
 
         if (eventList == null) eventList = listOf()
@@ -89,11 +89,11 @@ class EventListActivity : AppCompatActivity() {
         val location = intent.extras.getString("location")
         val name = intent.extras.getString("name")
 
-            if(!name.isNullOrBlank()) eventList = mViewModel.find(location, name).value
+            if(!name.isNullOrBlank()) eventList = mViewModel.find(location, name)
             else {
                 Log.d("prueba", "AntesSearch")
                 try {
-                    eventList = mViewModel.find(location).value
+                    eventList = mViewModel.find(location)
                 }
                 catch (e: Exception){
                     Log.d("prueba", e.message)
