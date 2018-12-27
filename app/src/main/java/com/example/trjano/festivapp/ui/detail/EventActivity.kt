@@ -47,15 +47,15 @@ class EventActivity : AppCompatActivity() {
         mViewModel = ViewModelProviders.of(this).get(EventActivityViewModel(application)::class.java)
 
 
-        //Sets the data to the ViewModel
+         //Sets the data to the ViewModel
         mViewModel.setValue(event)
 
+        //We set the value to the proper one from database if exists
+        async {
+            mViewModel.eventSetUp()
+        }
 
-        //Observing to changing Fav, Pend, Assisted buttons
-        mViewModel.liveDataEventItem.observe(this, Observer { event_item ->
-                    check_status()
-                    btn_setup()
-        })
+        Thread.sleep(2000)
 
         //Bind all the View elements to the layout
         binding = DataBindingUtil.setContentView(this, R.layout.activity_event)
@@ -66,7 +66,14 @@ class EventActivity : AppCompatActivity() {
             eventLocationExact.text = event.location
             eventDateFrom.text = event.startDate
         }
-        btn_setup()
+
+
+        //Observing to changing Fav, Pend, Assisted buttons
+        mViewModel.liveDataEventItem.observe(this, Observer { event_item ->
+            check_status()
+            btn_setup()
+        })
+
     }
 
 
@@ -75,18 +82,16 @@ class EventActivity : AppCompatActivity() {
      * if should be turned on or not
      */
     private fun check_status() {
-        async {
 
             if (mViewModel.isFavorite()) {
-                uiThread { btnFavorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite) }
+                btnFavorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite)
             }
             if (mViewModel.isUpcoming()) {
-                uiThread { btnUpcoming.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending) }
+                btnUpcoming.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending)
             }
             if (mViewModel.isAssisted()){
-                uiThread { btnAssisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted) }
+                btnAssisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted)
             }
-        }
     }
 
     /**
