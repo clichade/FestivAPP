@@ -17,6 +17,8 @@ import org.jetbrains.anko.backgroundDrawable
 import org.jetbrains.anko.toast
 import android.arch.lifecycle.ViewModelProviders
 import android.util.Log
+import com.example.trjano.festivapp.utilities.get_random_concert_image
+import com.example.trjano.festivapp.utilities.get_random_festival_image
 import org.jetbrains.anko.async
 import org.jetbrains.anko.uiThread
 import java.lang.Exception
@@ -55,7 +57,6 @@ class EventActivity : AppCompatActivity() {
             mViewModel.eventSetUp()
         }
 
-        Thread.sleep(2000)
 
         //Bind all the View elements to the layout
         binding = DataBindingUtil.setContentView(this, R.layout.activity_event)
@@ -65,6 +66,9 @@ class EventActivity : AppCompatActivity() {
             eventLocationCity.text = event.city
             eventLocationExact.text = event.location
             eventDateFrom.text = event.startDate
+            if (event.type == "0") eventImageview.setBackgroundResource(R.drawable.image_concert_5)
+            else eventImageview.setBackgroundResource(R.drawable.image_festival_1)
+
         }
 
 
@@ -73,6 +77,8 @@ class EventActivity : AppCompatActivity() {
             check_status()
             btn_setup()
         })
+
+
 
     }
 
@@ -102,70 +108,52 @@ class EventActivity : AppCompatActivity() {
 
             //If clicked, loads icon (turned on/off) asking ViewModel
             btnFavorite.setOnClickListener {
-                async {
+
                 if (mViewModel.isFavorite()) {
-                    uiThread {
                         btnFavorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite_no)
                         toast(resources.getString(R.string.toast_removed_favor))
-                    }
+
                 } else {
-                    uiThread {
                         btnFavorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite)
                         toast(resources.getString(R.string.toast_add_favorites))
-                    }
+
                 }
-
-
-                    try {
-                        mViewModel.updateFavorite()
-                        Log.d("eventos", "FavoriteState Altered")
-                    } catch (e: Exception) {
-                        Log.d("eventos", e.message)
-                    }
-                }
-
-                Log.d("eventos", "postUpdate")
+                async { mViewModel.updateFavorite()}
             }
 
             //If clicked, loads icon (turned on/off) asking ViewModel
             btnUpcoming.setOnClickListener {
-                async {
+
                     if (mViewModel.isUpcoming()) {
-                        uiThread {
                             btnUpcoming.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending_no)
                             toast(resources.getString(R.string.toast_removed_pending))
                         }
-                    } else {
-                        uiThread {
+
+                    else {
                             btnUpcoming.backgroundDrawable = resources.getDrawable(R.mipmap.ic_pending)
                             toast(resources.getString(R.string.toast_add_pending))
                         }
-                    }
-                    //Make the data change
 
-                        mViewModel.updateUpcoming()
-                }
+                    //Make the data change
+                       async { mViewModel.updateUpcoming()}
             }
 
             //If clicked, loads icon (turned on/off) asking ViewModel
             btnAssisted.setOnClickListener {
-                async {
+
                     if (mViewModel.isAssisted()) {
-                        uiThread {
                             btnAssisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted_no)
                             toast(resources.getString(R.string.toast_removed_assisted))
-                        }
+
                     } else {
-                        uiThread {
                             btnAssisted.backgroundDrawable = resources.getDrawable(R.mipmap.ic_assisted)
                             toast(resources.getString(R.string.toast_add_assisted))
-                        }
                     }
                     //Make the data change
 
-                    mViewModel.updateAssisted()
+                   async {  mViewModel.updateAssisted()}
 
-                }
+
             }
 
 
@@ -177,9 +165,12 @@ class EventActivity : AppCompatActivity() {
      */
     fun openSongKickLink(view: View) {
         //TODO: Modificar con enlace de la pagina del evento de Songkick
-        val uri = Uri.parse("https://www.songkick.com/")
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        startActivity(intent)
+
+        async {
+            val uri = Uri.parse(mViewModel.getSongkickUri())
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            uiThread { startActivity(intent)}
+        }
     }
 
     /**

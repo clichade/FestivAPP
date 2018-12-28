@@ -86,6 +86,14 @@ object SongKickAPI {
         return event
     }
 
+    fun getSongKickUri(id: Long): String{
+
+        val result = URL("https://api.songkick.com/api/3.0/events/$id.json?apikey=$KEY").readText()
+        var json = JSONObject(result)
+        val uri =json.getJSONObject("resultsPage").getJSONObject("results").getJSONObject("event").getString("uri")
+        return uri
+    }
+
     /**
      * Returns an array with the artists of the event by parsing the JSON Array
      * @param performances
@@ -100,6 +108,9 @@ object SongKickAPI {
 
         return artists
     }
+
+
+
 
 
     /**

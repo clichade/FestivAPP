@@ -47,7 +47,7 @@
             android:textSize="40dp"
             android:textAlignment="center"
             android:gravity="center"
-            android:background="@drawable/image_festival"
+            android:background="@drawable/image_festival_1"
             />
     </android.support.constraint.ConstraintLayout>
 
