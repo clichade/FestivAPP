@@ -6,10 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.trjano.festivapp.R
 import com.example.trjano.festivapp.data.database.EventItem
+import com.example.trjano.festivapp.utilities.get_random_concert_image
+import com.example.trjano.festivapp.utilities.get_random_festival_image
 import kotlinx.android.synthetic.main.event_list_item.view.*
 
 class EventListAdapter(private var mItems : ArrayList<EventItem>) :
         RecyclerView.Adapter<EventListAdapter.MyViewHolder>() {
+
+    val concert_imgs = listOf(R.drawable.image_concert_1)
     var onItemClick: ((EventItem) -> Unit)? = null
 
     // Provide a reference to the views for each data item
@@ -73,6 +77,11 @@ class EventListAdapter(private var mItems : ArrayList<EventItem>) :
         holder.view.eventlist_item_label_name.text = event.name
         holder.view.eventlist_item_label_city.text = event.city + ":\n  " + event.location
         holder.view.evenlist_item_label_date.text = event.startDate
+
+        if (event.type == "0")
+        holder.view.eventlist_item_imageview.setBackgroundResource(R.drawable.image_concert_5)
+        else
+            holder.view.eventlist_item_imageview.setBackgroundResource(R.drawable.image_festival_1)
 
         // - get element from your dataset at this position
         // - replace the contents of the view with that element

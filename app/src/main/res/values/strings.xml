@@ -4,7 +4,7 @@
 
     <string name="main_btn_search">Search</string>
     <string name="main_btn_favorites">Favorites</string>
-    <string name="main_btn_pending">Pending</string>
+    <string name="main_btn_pending">Upcoming</string>
     <string name="main_btn_attended">Attended</string>
     <string name="main_label_myevents">My Events</string>
 
@@ -29,10 +29,10 @@
     <string name="finder_error_dates_invalid">End date must be settled after Start date.</string>
 
     <string name="toast_add_favorites">Event added to favorites</string>
-    <string name="toast_add_pending">Event added to pending</string>
+    <string name="toast_add_pending">Event added to upcoming</string>
     <string name="toast_add_assisted">Event added to assisted</string>
     <string name="toast_removed_favor">Event removed from favorites</string>
-    <string name="toast_removed_pending">Event removed from pending</string>
+    <string name="toast_removed_pending">Event removed from upcoming</string>
     <string name="toast_removed_assisted">Event removed from assisted</string>
 
     <string name="event">Event</string>
@@ -107,7 +107,7 @@
 
     <string-array name="finder_menu_list">
         <item>Favorites</item>
-        <item>Pending</item>
+        <item>Upcoming</item>
         <item>Attended</item>
     </string-array>
     <string name="title_activity_list">ListActivity</string>

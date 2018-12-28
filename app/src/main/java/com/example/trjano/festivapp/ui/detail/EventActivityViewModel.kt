@@ -90,5 +90,8 @@ class EventActivityViewModel(application: Application) : AndroidViewModel(applic
      */
     fun isAssisted(): Boolean = liveDataEventItem.value!!.assisted == 1
 
-
+    /**
+     * Returns the uri from the given songkick event ID
+     */
+    fun getSongkickUri() = mRepository.getSonkickUri(liveDataEventItem.value!!.songkickID)
 }

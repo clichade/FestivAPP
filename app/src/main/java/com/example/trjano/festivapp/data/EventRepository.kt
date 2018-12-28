@@ -32,7 +32,7 @@ class EventRepository private constructor(context: Context){
      * Gets all favorite events from database source
      * @return list events
      */
-    fun getAllFavorites(): List<EventItem> = eventDAO.getAllPastEvents()
+    fun getAllFavorites(): List<EventItem> = eventDAO.getAllFavorites()
 
     /**
      * Gets all past events from database source
@@ -45,7 +45,6 @@ class EventRepository private constructor(context: Context){
      * @return list events
      */
     fun getAllUpcomingEvents(): List<EventItem> = eventDAO.getAllUpcomingEvents()
-
 
     /**
      * Deletes all past events from database source
@@ -199,6 +198,11 @@ class EventRepository private constructor(context: Context){
      * @return  LiveData<ArrayList<EventItem>>
      */
     fun find(location: String): List<EventItem> = songKickAPI.find(location)
+
+    /**
+     * Obtains the URI given the proper event Songkick id
+     */
+    fun getSonkickUri(id: Long) = songKickAPI.getSongKickUri(id)
 
 
 
