@@ -39,33 +39,20 @@ class EventListActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_event_list)
 
 
-
-
         mViewModel = ViewModelProviders.of(this).get(EventListActivityViewModel(application)::class.java)
         mViewModel.setValue(this.eventList)
 
-        event_list_setup()
-        Log.d("prueba", "antesAsync")
+        event_list_setup()//prepare the list for working properly
+
         mViewModel.eventList.observe(this, Observer { event_list ->
             async {
-                if (intent.extras.getString("Type").isNullOrBlank()) {
-                    load_search()
-                }
-                else {
-                    load_table()
-                }
+                val type = intent.extras.getString("Type")
 
-                //Todo: eventlist aveces es necesitada mas rapido de lo que carga, buscar una solución
-                uiThread {
-                    Log.d("prueba", "Primero")
-                    if(eventList == null)
-                         eventList = listOf()
+                //if there is no Type it is a searc otherwise it belongs to our own concent
+                if (type.isNullOrBlank()) load_search()
+                else load_table()
 
-                    viewAdapter.update(ArrayList(eventList))
-                    Log.d("prueba", "Segundo")
-                    Log.d("prueba", "tamaniolista: ${event_list?.size}")
-                    Log.d("prueba", "Tercero")
-                }
+                uiThread { viewAdapter.update(ArrayList(eventList)) }
             }
         })
     }
@@ -88,26 +75,27 @@ class EventListActivity : AppCompatActivity() {
 
         val location = intent.extras.getString("location")
         val name = intent.extras.getString("name")
+        val start_date = intent.extras.getString("start_date")
+        val end_date = intent.extras.getString("end_date")
+        val type = intent.extras.getString("search_type")
 
-            if(!name.isNullOrBlank()) eventList = mViewModel.find(location, name)
-            else {
-                Log.d("prueba", "AntesSearch")
-                try {
-                    eventList = mViewModel.find(location)
+              try {
+                    eventList = mViewModel.find(location,name,start_date,end_date,type)
                 }
                 catch (e: Exception){
                     Log.d("prueba", e.message)
                 }
 
 
-            }
+
 
 
     }
 
+    /**
+     * This method sets te behaviour of the list including the 2 column format and the effect when pressing one event
+     */
     fun event_list_setup(){
-
-
 
         viewManager = GridLayoutManager(this,2)
         viewAdapter = EventListAdapter(ArrayList(eventList))
@@ -132,8 +120,6 @@ class EventListActivity : AppCompatActivity() {
 
             // specify an viewAdapter (see also next example)
             adapter = viewAdapter
-
-
         }
 
     }

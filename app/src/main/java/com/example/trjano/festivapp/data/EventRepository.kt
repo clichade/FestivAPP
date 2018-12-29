@@ -8,6 +8,7 @@ import com.example.trjano.festivapp.data.database.AppDatabase
 import com.example.trjano.festivapp.data.database.EventDAO
 import com.example.trjano.festivapp.data.database.EventItem
 import com.example.trjano.festivapp.data.network.SongKickAPI
+import com.example.trjano.festivapp.utilities.Util
 import java.util.ArrayList
 
 /**
@@ -190,6 +191,12 @@ class EventRepository private constructor(context: Context){
     private fun checkErasable(event: EventItem) {
         if (event.favorite == 0 && event.assisted == 0 && event.upcoming == 0)
             eventDAO.deleteEvent(event)
+    }
+
+
+    fun find(location_name: String, event_name: String = Util.NONE,
+             date_start: String = Util.NONE, date_end : String = Util.NONE, type: String = Util.TYPE_BOTH): ArrayList<EventItem>{
+        return SongKickAPI.find(location_name,event_name,date_start,date_end,type)
     }
 
     /**

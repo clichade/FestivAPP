@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.trjano.festivapp.R
 import com.example.trjano.festivapp.data.database.EventItem
-import com.example.trjano.festivapp.utilities.get_random_concert_image
-import com.example.trjano.festivapp.utilities.get_random_festival_image
 import kotlinx.android.synthetic.main.event_list_item.view.*
 
 class EventListAdapter(private var mItems : ArrayList<EventItem>) :
         RecyclerView.Adapter<EventListAdapter.MyViewHolder>() {
 
-    val concert_imgs = listOf(R.drawable.image_concert_1)
+
     var onItemClick: ((EventItem) -> Unit)? = null
 
     // Provide a reference to the views for each data item
@@ -89,5 +87,5 @@ class EventListAdapter(private var mItems : ArrayList<EventItem>) :
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = mItems.size
+    override fun getItemCount() =mItems.size
 }
