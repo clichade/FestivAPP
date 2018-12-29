@@ -6,6 +6,9 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.example.trjano.festivapp.data.EventRepository
 import com.example.trjano.festivapp.data.database.EventItem
+import com.example.trjano.festivapp.data.network.SongKickAPI
+import com.example.trjano.festivapp.utilities.Util
+import java.util.ArrayList
 
 /**
  * Architecture Pattern: ViewModel for EventListActivity
@@ -69,6 +72,24 @@ class EventListActivityViewModel(application: Application) : AndroidViewModel(ap
      */
     fun find(location: String, name: String): List<EventItem> {
         return mRepository.find(location, name)
+    }
+
+    /**
+     * CALLS THE RESPOSITORY METHOD THAT DOES THE SAME
+     * Searches events in the SongKick API and returns them as an ArrayList of EventItem
+     * for the non obligatory the default value is "none"
+     *
+     * @param location_name* Name of the Province we want to search OBLIGATORY
+     * @param event_name fragment of the total name of the event we want to search OPTIONAL
+     * @param date_start minimum date to start searching the events OPTIONAL
+     * @param date_end maximum date to start searching the events OPTIONAL
+     * @param type* type of event it can be CONCERT, FESTIVAL or both, default as both CONCERT|FESTIVAL
+     *
+     * @return the list of event as ArrayList<EventItem>
+     */
+    fun find(location_name: String, event_name: String = Util.NONE,
+             date_start: String = Util.NONE, date_end : String = Util.NONE, type: String = Util.TYPE_BOTH): ArrayList<EventItem> {
+        return mRepository.find(location_name,event_name,date_start,date_end,type)
     }
 
 }

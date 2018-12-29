@@ -16,9 +16,8 @@ import com.example.trjano.festivapp.databinding.ActivityEventBinding
 import org.jetbrains.anko.backgroundDrawable
 import org.jetbrains.anko.toast
 import android.arch.lifecycle.ViewModelProviders
+import android.support.design.widget.Snackbar
 import android.util.Log
-import com.example.trjano.festivapp.utilities.get_random_concert_image
-import com.example.trjano.festivapp.utilities.get_random_festival_image
 import org.jetbrains.anko.async
 import org.jetbrains.anko.uiThread
 import java.lang.Exception
@@ -88,7 +87,7 @@ class EventActivity : AppCompatActivity() {
      * if should be turned on or not
      */
     private fun check_status() {
-
+        
             if (mViewModel.isFavorite()) {
                 btnFavorite.backgroundDrawable = resources.getDrawable(R.mipmap.ic_favorite)
             }
@@ -164,8 +163,6 @@ class EventActivity : AppCompatActivity() {
      * @param view
      */
     fun openSongKickLink(view: View) {
-        //TODO: Modificar con enlace de la pagina del evento de Songkick
-
         async {
             val uri = Uri.parse(mViewModel.getSongkickUri())
             val intent = Intent(Intent.ACTION_VIEW, uri)
