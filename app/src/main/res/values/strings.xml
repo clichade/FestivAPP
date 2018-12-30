@@ -42,7 +42,8 @@
     <string name="event_city_name">Cityname</string>
     <string name="event_exactlocation">RoyalTest Stadium 26, 60011</string>
     <string name="event_label_date">Date</string>
-    <string name="evemt_btn_songkick">SongKick</string>
+    <string name="event_btn_songkick">SongKick Web</string>
+    <string name="event_btn_where">Where to Find</string>
 
     <string name="general_concert">Concert</string>
     <string name="general_festival">Festival</string>

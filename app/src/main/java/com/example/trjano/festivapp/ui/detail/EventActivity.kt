@@ -16,11 +16,8 @@ import com.example.trjano.festivapp.databinding.ActivityEventBinding
 import org.jetbrains.anko.backgroundDrawable
 import org.jetbrains.anko.toast
 import android.arch.lifecycle.ViewModelProviders
-import android.support.design.widget.Snackbar
-import android.util.Log
 import org.jetbrains.anko.async
 import org.jetbrains.anko.uiThread
-import java.lang.Exception
 
 /**
  * Activity with details of an event (concert or festival)
@@ -168,6 +165,21 @@ class EventActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, uri)
             uiThread { startActivity(intent)}
         }
+    }
+
+    fun openGoogleMapsLocation(view: View) {
+
+        async {
+            val gmmIntentUri = Uri.parse(mViewModel.getGoogleMapsUri())
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            uiThread {
+                if (mapIntent.resolveActivity(packageManager) != null) {
+                    startActivity(mapIntent)
+                }
+            }
+        }
+
     }
 
     /**

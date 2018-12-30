@@ -146,6 +146,20 @@ object SongKickAPI {
     }
 
     /**
+     * Given the Songkick ID of an event returns a Pair containing the Latitude and Longitude of the event location
+     * @return Pair(Latitude: Long, Longitude: Long)
+     */
+    fun getEventCoordinates(id: Long): Pair<Long,Long>{
+
+        val result = URL("https://api.songkick.com/api/3.0/events/$id.json?apikey=$KEY").readText()
+        var json = JSONObject(result)
+        val json_location =json.getJSONObject("resultsPage").getJSONObject("results").getJSONObject("event").getJSONObject("location")
+        val coordinates = Pair(json_location.getLong("lat"),json_location.getLong("lng"))
+        return coordinates
+
+    }
+
+    /**
      * Returns an array with the artists of the event by parsing the JSON Array
      * @param performances
      */
