@@ -211,6 +211,12 @@ class EventRepository private constructor(context: Context){
      */
     fun getSonkickUri(id: Long) = songKickAPI.getSongKickUri(id)
 
+    /**
+     * Given the Songkick ID of an event returns a Pair containing the Latitude and Longitude of the event location
+     * @return Pair(Latitude: Long, Longitude: Long)
+     */
+    fun getEventCoordinates(id: Long) = songKickAPI.getEventCoordinates(id)
+
 
 
     /**
