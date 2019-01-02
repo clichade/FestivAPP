@@ -3,7 +3,6 @@ package com.example.trjano.festivapp.ui.detail
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import android.net.Uri
 import android.util.Log
 
 import com.example.trjano.festivapp.data.EventRepository
@@ -103,8 +102,8 @@ class EventActivityViewModel(application: Application) : AndroidViewModel(applic
         val coord_pair = mRepository.getEventCoordinates(liveDataEventItem.value!!.songkickID)
         val lat = coord_pair.first
         val lng = coord_pair.second
-        val label = liveDataEventItem.value!!.location
-        return "geo:$lat,$lng?q=$label"
+        val query = liveDataEventItem.value!!.location
+        return "geo:$lat,$lng?q=$query"
 
     }
 }
